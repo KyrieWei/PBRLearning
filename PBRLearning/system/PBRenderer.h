@@ -4,8 +4,6 @@
 #include <string>
 
 #include "../tools/Camera.h"
-//#include "../tools/Shader.h"
-//#include "../tools/Utility.h"
 
 class PBRenderer
 {

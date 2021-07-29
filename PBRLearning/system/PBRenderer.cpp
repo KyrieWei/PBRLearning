@@ -1,4 +1,5 @@
 #include "PBRenderer.h"
+#include "../system/Scene.h"
 
 PBRenderer::PBRenderer()
 {
@@ -84,6 +85,10 @@ void PBRenderer::run()
     glEnable(GL_DEPTH_TEST);
 
 
+    Scene simple_scene;
+
+    simple_scene.initializeScene();
+
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -95,7 +100,7 @@ void PBRenderer::run()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+        simple_scene.render(camera, width, height);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -13,22 +13,22 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="gui">
-      <UniqueIdentifier>{95b8bcbc-8672-491e-a36b-9e7abeccdad1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="tools">
       <UniqueIdentifier>{8c305c56-4959-4827-9736-3c111f5d348a}</UniqueIdentifier>
     </Filter>
     <Filter Include="objects">
       <UniqueIdentifier>{d92f9236-b475-448c-a01e-11e2548d5012}</UniqueIdentifier>
     </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{95b8bcbc-8672-491e-a36b-9e7abeccdad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{df5ee7d7-f7be-4690-8cba-9e5f925d420d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\PBRenderer.cpp">
-      <Filter>gui</Filter>
     </ClCompile>
     <ClCompile Include="tools\glad.c">
       <Filter>tools</Filter>
@@ -42,11 +42,17 @@
     <ClCompile Include="objects\Mesh.cpp">
       <Filter>objects</Filter>
     </ClCompile>
+    <ClCompile Include="system\PBRenderer.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="system\Scene.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\Sphere.cpp">
+      <Filter>objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gui\PBRenderer.h">
-      <Filter>gui</Filter>
-    </ClInclude>
     <ClInclude Include="tools\Camera.h">
       <Filter>tools</Filter>
     </ClInclude>
@@ -68,5 +74,22 @@
     <ClInclude Include="objects\Mesh.h">
       <Filter>objects</Filter>
     </ClInclude>
+    <ClInclude Include="system\PBRenderer.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="system\Scene.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Sphere.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\pbr_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\pbr_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
