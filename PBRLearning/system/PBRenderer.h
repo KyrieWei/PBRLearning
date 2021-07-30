@@ -1,37 +1,30 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <string>
 
 #include "../tools/Camera.h"
+#include "../objects/MeshMgr.h"
 
 class PBRenderer
 {
-public:
-	unsigned int width, height;
-	std::string title;
+private:
+	int width, height;
 
-	Camera camera;
-	float lastX;
-	float lastY;
-	bool firstMouse;
+	Camera::ptr camera;
 
-	//time
-	float deltaTime;
-	float lastFrame;
+	MeshMgr::ptr meshMgr;
 
 public:
-	PBRenderer();
+	typedef std::shared_ptr<PBRenderer> ptr;
+	
 
-	void setWindowSize(unsigned int width_, unsigned int height_);
-	void setWindowTitle(const std::string& title);
+public:
+	PBRenderer() = default;
 
-	void run();
+	Camera::ptr getCamera(){ return camera; }
+	MeshMgr::ptr getMeshMgr() { return meshMgr; }
 
-	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-	void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-	void processInput(GLFWwindow* window, float deltaTime);
+	void initialzie(int width, int height);
+	void render();
 
 };
 

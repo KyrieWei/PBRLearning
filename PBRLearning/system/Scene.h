@@ -1,22 +1,26 @@
 #pragma once
-#include "../tools/Shader.h"
-#include "../tools/Camera.h"
-#include "../objects/Sphere.h"
+#include "PBRenderer.h"
 
 class Scene
 {
 public:
-	glm::vec3* lightPositions;
-	glm::vec3* lightColors;
+	typedef std::shared_ptr<Scene> ptr;
 
-	Shader shader;
+	Scene() = default;
 
-	Sphere sphere;
+	virtual ~Scene() = default;
 
+	virtual void initializeScene(PBRenderer::ptr pbrenderer) = 0;
+};
+
+class simpleScene : public Scene
+{
 public:
-	Scene() : shader("shaders/pbr_vert.vs", "shaders/pbr_frag.fs") {}
-	~Scene();
+	typedef std::shared_ptr<simpleScene> ptr;
 
-	void initializeScene();
-	void render(const Camera& camera, unsigned int scr_width, unsigned int scr_height);
+	simpleScene() = default;
+	virtual ~simpleScene() = default;
+
+	virtual void initializeScene(PBRenderer::ptr pbrenderer);
+
 };

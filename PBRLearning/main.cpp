@@ -1,14 +1,16 @@
 #include <iostream>
 
-#include "system/PBRenderer.h"
+#include "system/Window.h"
 
 int main()
 {
-	PBRenderer renderer;
+	Window::ptr app = Window::getSingleton();
 
-	renderer.setWindowSize(1280, 720);
-	renderer.setWindowTitle("PBRLearning");
-	renderer.run();
+	app->setWindowSize(1280, 720);
+	app->setWindowTitle("PBRLearning");
+
+	app->run();
 
 	return 0;
+
 }

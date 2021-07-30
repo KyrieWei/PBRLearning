@@ -48,7 +48,13 @@
     <ClCompile Include="system\Scene.cpp">
       <Filter>system</Filter>
     </ClCompile>
-    <ClCompile Include="objects\Sphere.cpp">
+    <ClCompile Include="objects\Geometry.cpp">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="system\Window.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\MeshMgr.cpp">
       <Filter>objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,7 +86,16 @@
     <ClInclude Include="system\Scene.h">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="objects\Sphere.h">
+    <ClInclude Include="objects\Geometry.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="system\Window.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Singleton.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\MeshMgr.h">
       <Filter>objects</Filter>
     </ClInclude>
   </ItemGroup>
