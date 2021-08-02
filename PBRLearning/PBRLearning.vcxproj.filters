@@ -25,6 +25,12 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{df5ee7d7-f7be-4690-8cba-9e5f925d420d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures">
+      <UniqueIdentifier>{21a1d650-748a-4602-aaee-5a1171d5eb26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="postprocess">
+      <UniqueIdentifier>{e5899a6b-be4d-465c-b5d9-8e6153df0bf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -55,6 +61,21 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="objects\MeshMgr.cpp">
+      <Filter>objects</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\ShaderMgr.cpp">
+      <Filter>shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="textures\Texture.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="textures\TextureMgr.cpp">
+      <Filter>textures</Filter>
+    </ClCompile>
+    <ClCompile Include="postprocess\IBLAuxiliary.cpp">
+      <Filter>postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="objects\FrameBuffer.cpp">
       <Filter>objects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,12 +119,45 @@
     <ClInclude Include="objects\MeshMgr.h">
       <Filter>objects</Filter>
     </ClInclude>
+    <ClInclude Include="shaders\ShaderMgr.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="textures\Texture.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="textures\TextureMgr.h">
+      <Filter>textures</Filter>
+    </ClInclude>
+    <ClInclude Include="postprocess\IBLAuxiliary.h">
+      <Filter>postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\FrameBuffer.h">
+      <Filter>objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\pbr_vert.vs">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\pbr_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\hdrToCubemap_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\hdrToCubemap_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\skybox_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\skybox_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\irradiance_convolution_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\irradiance_convolution_frag.fs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,73 +1,50 @@
 #include "Scene.h"
 #include "../objects/Geometry.h"
-
+#include "../postprocess/IBLAuxiliary.h"
 
 void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 {
 	MeshMgr::ptr meshMgr = pbrrenderer->getMeshMgr();
+	ShaderMgr::ptr shaderMgr = pbrrenderer->getShaderMgr();
+	TextureMgr::ptr textureMgr = pbrrenderer->getTextureMgr();
 
-	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(10, 25, 25));
+	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(1, 64, 64));
+	unsigned int cubeMeshIndex = meshMgr->loadMesh(new Cube(1, 1, 1));
 
-	//lightPositions = new glm::vec3[4]
-	//{
-	//	glm::vec3(-10.0f,  10.0f, 10.0f),
-	//	glm::vec3(10.0f,  10.0f, 10.0f),
-	//	glm::vec3(-10.0f, -10.0f, 10.0f),
-	//	glm::vec3(10.0f, -10.0f, 10.0f),
-	//};
+	//shaders
+	unsigned int pbrShader = shaderMgr->loadShader("pbrShader", "shaders/pbr_vert.vs", "shaders/pbr_frag.fs");
+	unsigned int hdrToCubemapShader = shaderMgr->loadShader("hdrToCubeShader", "shaders/hdrToCubemap_vert.vs", "shaders/hdrToCubemap_frag.fs");
+	unsigned int skyboxShader = shaderMgr->loadShader("skyboxShader", "shaders/skybox_vert.vs", "shaders/skybox_frag.fs");
+	unsigned int skyboxConvShader = shaderMgr->loadShader("skyboxConvShader", "shaders/irradiance_convolution_vert.vs", "shaders/irradiance_convolution_frag.fs");
 
-	//lightColors = new glm::vec3[4]
-	//{
-	//	glm::vec3(300.0f, 300.0f, 300.0f),
-	//	glm::vec3(300.0f, 300.0f, 300.0f),
-	//	glm::vec3(300.0f, 300.0f, 300.0f),
-	//	glm::vec3(300.0f, 300.0f, 300.0f)
-	//};
+	//pbr shader
+	Shader::ptr shader = shaderMgr->getShader("pbrShader");
+	shader->use();
+	shader->setInt("irradianceMap", 0);
 
+	//hdr to cube map
+	shader = shaderMgr->getShader("hdrToCubeShader");
+	shader->use();
+	shader->setInt("equirectangularMap", 0);
+
+	//conv sky box shader
+	shader = shaderMgr->getShader("skyboxConvShader");
+	shader->use();
+	shader->setInt("environmentMap", 0);
+
+	//sky box shader
+	shader = shaderMgr->getShader("skyboxShader");
+	shader->use();
+	shader->setInt("environmentMap", 0);
+
+	//textures
+	unsigned int equirectangularMap = textureMgr->loadTexture2DHDR("equirectangularMap", "assets/HDR/newport_loft.hdr");
+	unsigned int cubeTexindex = textureMgr->loadTextureCubeHDR("skyboxCubemap", nullptr, 512, 512);
+	unsigned int cube_conv_Texindex = textureMgr->loadTextureCubeHDR("skyboxConvCubemap", nullptr, 512, 512);
+
+	//convert hdrmap to cube map
+	IBLAuxiliary::convertToCubemap(512, 512, equirectangularMap, cubeTexindex);
+	//convolute hdrmap
+	IBLAuxiliary::convoluteDiffuseIntegral(512, 512, cubeTexindex, cube_conv_Texindex);
 }
 
-
-//void Scene::render(const Camera::ptr camera, unsigned int scr_width, unsigned int scr_height)
-//{
-//	shader.use();
-//	
-//	glm::mat4 view = camera->GetViewMatrix();
-//	glm::mat4 projection = glm::perspective(camera->Zoom, (float)scr_width / (float)scr_height, 0.1f, 100.0f);
-//
-//	shader.setMat4("view", view);
-//	shader.setMat4("projection", projection);
-//	shader.setVec3("viewPos", camera->Position);
-//
-//	shader.setVec3("albedo", 0.5f, 0.0f, 0.0f);
-//	shader.setFloat("ao", 1.0f);
-//
-//	glm::mat4 model;
-//	for (int row = 0; row < 7; row++)
-//	{
-//		shader.setFloat("metallic", (float)row / 7.0f);
-//		
-//		for (int col = 0; col < 7; col++)
-//		{
-//			shader.setFloat("roughness", glm::clamp((float)col / 7.0f, 0.05f, 1.0f));
-//			
-//			model = glm::mat4(1.0f);
-//			model = glm::translate(model, glm::vec3((col - 7 / 2) * 2.5, (row - 7 / 2) * 2.5, 0.0f));
-//			shader.setMat4("model", model);
-//			sphere.render_sphere();
-//		}
-//	}
-//
-//	for (unsigned int i = 0; i < 4; i++)
-//	{
-//		glm::vec3 newPos = lightPositions[i];
-//		shader.setVec3("lightPositions[" + std::to_string(i) + "]", newPos);
-//		shader.setVec3("lightColors[" + std::to_string(i) + "]", lightColors[i]);
-//
-//		model = glm::mat4(1.0f);
-//		model = glm::translate(model, newPos);
-//		model = glm::scale(model, glm::vec3(0.5f));
-//		shader.setMat4("model", model);
-//		sphere.render_sphere();
-//	}
-//	
-//}

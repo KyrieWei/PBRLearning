@@ -13,6 +13,8 @@ class Shader
 {
 public:
     unsigned int ID;
+
+    typedef std::shared_ptr<Shader> ptr;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
     Shader();

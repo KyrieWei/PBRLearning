@@ -141,23 +141,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\FrameBuffer.cpp" />
     <ClCompile Include="objects\Mesh.cpp" />
     <ClCompile Include="objects\Geometry.cpp" />
     <ClCompile Include="objects\MeshMgr.cpp" />
+    <ClCompile Include="postprocess\IBLAuxiliary.cpp" />
+    <ClCompile Include="shaders\ShaderMgr.cpp" />
     <ClCompile Include="system\PBRenderer.cpp" />
     <ClCompile Include="system\Scene.cpp" />
     <ClCompile Include="system\Window.cpp" />
+    <ClCompile Include="textures\Texture.cpp" />
+    <ClCompile Include="textures\TextureMgr.cpp" />
     <ClCompile Include="tools\glad.c" />
     <ClCompile Include="tools\Maths.cpp" />
     <ClCompile Include="tools\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="objects\FrameBuffer.h" />
     <ClInclude Include="objects\Mesh.h" />
     <ClInclude Include="objects\Geometry.h" />
     <ClInclude Include="objects\MeshMgr.h" />
+    <ClInclude Include="postprocess\IBLAuxiliary.h" />
+    <ClInclude Include="shaders\ShaderMgr.h" />
     <ClInclude Include="system\PBRenderer.h" />
     <ClInclude Include="system\Scene.h" />
     <ClInclude Include="system\Window.h" />
+    <ClInclude Include="textures\Texture.h" />
+    <ClInclude Include="textures\TextureMgr.h" />
     <ClInclude Include="tools\Camera.h" />
     <ClInclude Include="tools\Maths.h" />
     <ClInclude Include="tools\Shader.h" />
@@ -167,8 +177,14 @@
     <ClInclude Include="tools\Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\hdrToCubemap_frag.fs" />
+    <None Include="shaders\hdrToCubemap_vert.vs" />
+    <None Include="shaders\irradiance_convolution_frag.fs" />
+    <None Include="shaders\irradiance_convolution_vert.vs" />
     <None Include="shaders\pbr_frag.fs" />
     <None Include="shaders\pbr_vert.vs" />
+    <None Include="shaders\skybox_frag.fs" />
+    <None Include="shaders\skybox_vert.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

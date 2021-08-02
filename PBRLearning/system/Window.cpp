@@ -67,6 +67,10 @@ void Window::initialize()
 
     pbrenderer = std::make_shared<PBRenderer>();
     pbrenderer->initialzie(width, height);
+
+    //simplescene = std::shared_ptr<simpleScene>(new simpleScene());
+    simplescene = std::make_shared<simpleScene>();
+    simplescene->initializeScene(pbrenderer);
 }
 
 void Window::beginFrame()
@@ -83,6 +87,8 @@ void Window::run()
 {
 
     initialize();
+
+    glViewport(0, 0, width, height);
 
     while (!glfwWindowShouldClose(window))
     {

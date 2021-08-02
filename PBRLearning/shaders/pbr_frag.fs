@@ -18,9 +18,16 @@ uniform vec3 lightColors[light_num];
 
 uniform vec3 viewPos;
 
+uniform samplerCube irradianceMap;
+
 vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
 	return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5);
+}
+
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
+{
+	return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
 }
 
 float DistributionGGX(vec3 N, vec3 H, float roughness)
@@ -93,7 +100,11 @@ void main()
 		Lo += (Kd * albedo / PI + specular) * radiance * NdotL;
 	}
 
-	vec3 ambient = vec3(0.03) * albedo * ao;
+	vec3 KS = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
+	vec3 KD = 1.0 - KS;
+	vec3 irradiance = texture(irradianceMap, N).rgb;
+	vec3 diffuse = irradiance * albedo;
+	vec3 ambient = (KD * diffuse) * ao;
 
 	vec3 color = ambient + Lo;
 	//HDR toneMapping

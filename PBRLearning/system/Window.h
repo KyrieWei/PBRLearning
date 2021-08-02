@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../tools/Singleton.h"
+#include "Scene.h"
 #include "PBRenderer.h"
 
 class Window : public Singleton<Window>
@@ -12,7 +13,7 @@ private:
 	std::string title;
 	GLFWwindow* window;
 	PBRenderer::ptr pbrenderer;
-
+	simpleScene::ptr simplescene;
 public:
 	typedef std::shared_ptr<Window> ptr;
 
