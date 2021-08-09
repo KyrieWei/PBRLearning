@@ -45,6 +45,7 @@ void PBRenderer::render()
 
 	textureMgr->bindTexture("skyboxConvCubemap", 0);
 
+	//draw pbr balls
 	glm::mat4 model;
 	for (int row = 0; row < 7; row++)
 	{
@@ -61,6 +62,7 @@ void PBRenderer::render()
 		}
 	}
 
+	//draw four light ball
 	for (unsigned int i = 0; i < 4; i++)
 	{
 		glm::vec3 newPos = lightPositions[i];
@@ -74,7 +76,7 @@ void PBRenderer::render()
 		meshMgr->drawMesh(0);
 	}
 
-	//skybox
+	//render skybox
 	shader = shaderMgr->getShader("skyboxShader");
 	shader->use();
 	shader->setMat4("view", view);

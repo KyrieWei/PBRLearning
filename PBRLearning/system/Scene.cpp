@@ -16,6 +16,7 @@ void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	unsigned int hdrToCubemapShader = shaderMgr->loadShader("hdrToCubeShader", "shaders/hdrToCubemap_vert.vs", "shaders/hdrToCubemap_frag.fs");
 	unsigned int skyboxShader = shaderMgr->loadShader("skyboxShader", "shaders/skybox_vert.vs", "shaders/skybox_frag.fs");
 	unsigned int skyboxConvShader = shaderMgr->loadShader("skyboxConvShader", "shaders/irradiance_convolution_vert.vs", "shaders/irradiance_convolution_frag.fs");
+	unsigned int skyboxPrefilterShader = shaderMgr->loadShader("skyboxPrefilterShader", "shaders/prefilter_env_map_vert.vs", "shaders/prefilter_env_map_frag.fs");
 
 	//pbr shader
 	Shader::ptr shader = shaderMgr->getShader("pbrShader");
@@ -32,6 +33,10 @@ void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	shader->use();
 	shader->setInt("environmentMap", 0);
 
+	shader = shaderMgr->getShader("skyboxPrefilterShader");
+	shader->use();
+	shader->setInt("environmentMap", 0);
+
 	//sky box shader
 	shader = shaderMgr->getShader("skyboxShader");
 	shader->use();
@@ -39,12 +44,15 @@ void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 
 	//textures
 	unsigned int equirectangularMap = textureMgr->loadTexture2DHDR("equirectangularMap", "assets/HDR/newport_loft.hdr");
-	unsigned int cubeTexindex = textureMgr->loadTextureCubeHDR("skyboxCubemap", nullptr, 512, 512);
-	unsigned int cube_conv_Texindex = textureMgr->loadTextureCubeHDR("skyboxConvCubemap", nullptr, 512, 512);
+	unsigned int cube_tex_index = textureMgr->loadTextureCubeHDR("skyboxCubemap", nullptr, 512, 512);
+	unsigned int cube_conv_tex_index = textureMgr->loadTextureCubeHDR("skyboxConvCubemap", nullptr, 512, 512);
+	unsigned int cube_prefilter_tex_index = textureMgr->loadTextureCubeHDR("skyboxPrefilterMap", nullptr, 256, 256, true);
 
 	//convert hdrmap to cube map
-	IBLAuxiliary::convertToCubemap(512, 512, equirectangularMap, cubeTexindex);
+	IBLAuxiliary::convertToCubemap(512, 512, equirectangularMap, cube_tex_index);
 	//convolute hdrmap
-	IBLAuxiliary::convoluteDiffuseIntegral(512, 512, cubeTexindex, cube_conv_Texindex);
+	IBLAuxiliary::convoluteDiffuseIntegral(512, 512, cube_tex_index, cube_conv_tex_index);
+	//prefilter environment map 
+	IBLAuxiliary::convoluteSpecularIntegral(256, 256, cube_tex_index, cube_prefilter_tex_index);
 }
 
