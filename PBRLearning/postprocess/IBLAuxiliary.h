@@ -11,5 +11,7 @@ public:
 	static void convoluteDiffuseIntegral(int width, int height, unsigned int cubemapTexIndex, unsigned int irradianceTexIndex);
 	//prefilter HDR env cube map
 	static void convoluteSpecularIntegral(int width, int height, unsigned int cubemapTexIndex, unsigned int prefilteredTexIndex);
+	//precompute BRDF Integral
+	static void convoluteSpecularBRDFIntegral(int width, int height, unsigned int brdfLutTexIndex);
 };
 

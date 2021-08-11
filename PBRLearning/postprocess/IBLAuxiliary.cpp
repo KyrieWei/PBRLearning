@@ -38,7 +38,7 @@ void IBLAuxiliary::convertToCubemap(int width, int height, unsigned int hdrTexIn
 
 	GLuint cubemapId = textureMgr->getTexture(cubemapTexIndex)->getTextureID();
 	Shader::ptr shader = shaderMgr->getShader("hdrToCubeShader");
-	Mesh::ptr cubeMesh = meshMgr->getMesh(1);
+	Mesh::ptr cubeMesh = meshMgr->getMesh("Cube");
 
 	shader->use();
 	shader->setMat4("projection", captureProjectMatrix);
@@ -90,7 +90,7 @@ void IBLAuxiliary::convoluteDiffuseIntegral(int width, int height, unsigned int 
 
 	GLuint irradianceTexID = textureMgr->getTexture(irradianceTexIndex)->getTextureID();
 	Shader::ptr shader = shaderMgr->getShader("skyboxConvShader");
-	Mesh::ptr cubeMesh = meshMgr->getMesh(1); //TODO FIX 1 TO INDEX
+	Mesh::ptr cubeMesh = meshMgr->getMesh("Cube");
 
 	shader->use();
 	shader->setMat4("projection", captureProjectMatrix);
@@ -129,8 +129,8 @@ void IBLAuxiliary::convoluteSpecularIntegral(int width, int height, unsigned int
 
 	//begin to filter
 	GLuint prefilteredTexId = texMgr->getTexture(prefilteredTexIndex)->getTextureID();
-	Shader::ptr shader = shaderMgr->getShader("prefilterEnvMap");
-	Mesh::ptr cubeMesh = meshMgr->getMesh(1); //TODO FIX 1 TO INDEX
+	Shader::ptr shader = shaderMgr->getShader("skyboxPrefilterShader");
+	Mesh::ptr cubeMesh = meshMgr->getMesh("Cube");
 	shader->use();
 	shader->setMat4("projection", captureProjectMatrix);
 	texMgr->bindTexture(cubemapTexIndex, 0);
@@ -164,4 +164,32 @@ void IBLAuxiliary::convoluteSpecularIntegral(int width, int height, unsigned int
 	}
 
 	texMgr->unbindTexture(cubemapTexIndex);
+}
+
+
+void IBLAuxiliary::convoluteSpecularBRDFIntegral(int width, int height, unsigned int brdfLutTexIndex)
+{
+	TextureMgr::ptr texMgr = TextureMgr::getSingleton();
+	ShaderMgr::ptr shaderMgr = ShaderMgr::getSingleton();
+	MeshMgr::ptr meshMgr = MeshMgr::getSingleton();
+
+	FrameBuffer::ptr framebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "brdfDepth", {}, true));
+
+	Shader::ptr shader = shaderMgr->getShader("");
+	Mesh::ptr quadMesh = meshMgr->getMesh("Quad");
+
+	framebuffer->bind();
+	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	GLuint brdfLutTexId = texMgr->getTexture(brdfLutTexIndex)->getTextureID();
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, brdfLutTexId, 0);
+
+	shader->use();
+	quadMesh->draw();
+	framebuffer->unBind();
 }

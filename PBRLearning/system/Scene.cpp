@@ -8,8 +8,9 @@ void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	ShaderMgr::ptr shaderMgr = pbrrenderer->getShaderMgr();
 	TextureMgr::ptr textureMgr = pbrrenderer->getTextureMgr();
 
-	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(1, 64, 64));
-	unsigned int cubeMeshIndex = meshMgr->loadMesh(new Cube(1, 1, 1));
+	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(1, 64, 64), "Sphere");
+	unsigned int cubeMeshIndex = meshMgr->loadMesh(new Cube(1, 1, 1), "Cube");
+	unsigned int quadMeshIndex = meshMgr->loadMesh(new ScreenQuad(), "Quad");
 
 	//shaders
 	unsigned int pbrShader = shaderMgr->loadShader("pbrShader", "shaders/pbr_vert.vs", "shaders/pbr_frag.fs");

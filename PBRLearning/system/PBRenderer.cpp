@@ -45,6 +45,8 @@ void PBRenderer::render()
 
 	textureMgr->bindTexture("skyboxConvCubemap", 0);
 
+	Mesh::ptr mesh = meshMgr->getMesh("Sphere");
+
 	//draw pbr balls
 	glm::mat4 model;
 	for (int row = 0; row < 7; row++)
@@ -58,7 +60,7 @@ void PBRenderer::render()
 			model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3((col - 7 / 2) * 2.5, (row - 7 / 2) * 2.5, 0.0f));
 			shader->setMat4("model", model);
-			meshMgr->drawMesh(0);
+			mesh->draw();
 		}
 	}
 
@@ -73,7 +75,7 @@ void PBRenderer::render()
 		model = glm::translate(model, newPos);
 		model = glm::scale(model, glm::vec3(0.5f));
 		shader->setMat4("model", model);
-		meshMgr->drawMesh(0);
+		mesh->draw();
 	}
 
 	//render skybox
@@ -82,7 +84,7 @@ void PBRenderer::render()
 	shader->setMat4("view", view);
 	shader->setMat4("projection", projection);
 	
-	textureMgr->bindTexture("skyboxCubemap", 0);
-	meshMgr->drawMesh(1);
+	textureMgr->bindTexture("skyboxPrefilterMap", 0);
+	mesh->draw();
 }
 

@@ -183,6 +183,8 @@
     <None Include="shaders\irradiance_convolution_vert.vs" />
     <None Include="shaders\pbr_frag.fs" />
     <None Include="shaders\pbr_vert.vs" />
+    <None Include="shaders\prefilter_env_map_frag.fs" />
+    <None Include="shaders\prefilter_env_map_vert.vs" />
     <None Include="shaders\skybox_frag.fs" />
     <None Include="shaders\skybox_vert.vs" />
   </ItemGroup>
