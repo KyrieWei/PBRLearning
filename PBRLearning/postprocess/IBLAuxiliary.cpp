@@ -175,7 +175,7 @@ void IBLAuxiliary::convoluteSpecularBRDFIntegral(int width, int height, unsigned
 
 	FrameBuffer::ptr framebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "brdfDepth", {}, true));
 
-	Shader::ptr shader = shaderMgr->getShader("");
+	Shader::ptr shader = shaderMgr->getShader("skyboxPrecomputeBRDFShader");
 	Mesh::ptr quadMesh = meshMgr->getMesh("Quad");
 
 	framebuffer->bind();
@@ -191,5 +191,6 @@ void IBLAuxiliary::convoluteSpecularBRDFIntegral(int width, int height, unsigned
 
 	shader->use();
 	quadMesh->draw();
+
 	framebuffer->unBind();
 }

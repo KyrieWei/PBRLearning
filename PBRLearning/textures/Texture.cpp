@@ -95,7 +95,7 @@ Texture2DHDR::Texture2DHDR(const std::string& path)
 	setupTexture(path, "");
 }
 
-Texture2DHDR::Texture2DHDR(unsigned char* data, int width_, int height_) : width(width_), height(height_)
+Texture2DHDR::Texture2DHDR(const char* data, int width_, int height_) : width(width_), height(height_)
 {
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);

@@ -57,7 +57,7 @@ public:
 	typedef std::shared_ptr<Texture2DHDR> ptr;
 
 	Texture2DHDR(const std::string& path);
-	Texture2DHDR(unsigned char* images, int width, int height);
+	Texture2DHDR(const char* images, int width, int height);
 	~Texture2DHDR();
 
 	virtual void bind(unsigned int unit);

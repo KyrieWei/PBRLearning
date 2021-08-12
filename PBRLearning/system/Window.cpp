@@ -90,6 +90,8 @@ void Window::run()
 
     glViewport(0, 0, width, height);
 
+    glEnable(GL_DEPTH_TEST);
+
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();

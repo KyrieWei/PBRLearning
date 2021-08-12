@@ -44,6 +44,8 @@ void PBRenderer::render()
 	shader->setFloat("ao", 1.0f);
 
 	textureMgr->bindTexture("skyboxConvCubemap", 0);
+	textureMgr->bindTexture("skyboxPrefilterMap", 1);
+	textureMgr->bindTexture("brdfLutMap", 2);
 
 	Mesh::ptr mesh = meshMgr->getMesh("Sphere");
 
@@ -84,7 +86,15 @@ void PBRenderer::render()
 	shader->setMat4("view", view);
 	shader->setMat4("projection", projection);
 	
-	textureMgr->bindTexture("skyboxPrefilterMap", 0);
+	textureMgr->bindTexture("skyboxCubemap", 0);
 	mesh->draw();
+
+	//mesh = meshMgr->getMesh("Quad");
+	//shader = shaderMgr->getShader("debug");
+
+	//shader->use();
+	//textureMgr->bindTexture("brdfLutMap", 0);
+	//mesh->draw();
+
 }
 

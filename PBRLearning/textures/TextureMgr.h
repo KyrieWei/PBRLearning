@@ -49,6 +49,16 @@ public:
 		return objects.size() - 1;
 	}
 
+	unsigned int loadTexture2DHDRRaw(const std::string& name, const char* data, int width, int height)
+	{
+		if (objectsMap.find(name) != objectsMap.end())
+			return objectsMap[name];
+		Texture::ptr tex(new Texture2DHDR(data, width, height));
+		objects.push_back(tex);
+		objectsMap[name] = objects.size() - 1;
+		return objects.size() - 1;
+	}
+
 	unsigned int loadTextureCube(const std::string& name, const std::string& path, const std::string& pFix)
 	{
 		if (objectsMap.find(name) != objectsMap.end())

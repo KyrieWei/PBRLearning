@@ -24,3 +24,14 @@ public:
 	virtual void initializeScene(PBRenderer::ptr pbrenderer);
 
 };
+
+class FelLordScene : public Scene
+{
+public:
+	typedef std::shared_ptr<FelLordScene> ptr;
+
+	FelLordScene() = default;
+	virtual ~FelLordScene() = default;
+
+	virtual void initializeScene(PBRenderer::ptr pbrrenderer);
+};

@@ -140,6 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="drawable\Drawable.cpp" />
+    <ClCompile Include="drawable\StaticModelDrawable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="objects\FrameBuffer.cpp" />
     <ClCompile Include="objects\Mesh.cpp" />
@@ -157,6 +159,8 @@
     <ClCompile Include="tools\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="drawable\Drawable.h" />
+    <ClInclude Include="drawable\StaticModelDrawable.h" />
     <ClInclude Include="objects\FrameBuffer.h" />
     <ClInclude Include="objects\Mesh.h" />
     <ClInclude Include="objects\Geometry.h" />
@@ -177,12 +181,16 @@
     <ClInclude Include="tools\Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\debug_frag.fs" />
+    <None Include="shaders\debug_vert.vs" />
     <None Include="shaders\hdrToCubemap_frag.fs" />
     <None Include="shaders\hdrToCubemap_vert.vs" />
     <None Include="shaders\irradiance_convolution_frag.fs" />
     <None Include="shaders\irradiance_convolution_vert.vs" />
     <None Include="shaders\pbr_frag.fs" />
     <None Include="shaders\pbr_vert.vs" />
+    <None Include="shaders\precompute_brdfLut_frag.fs" />
+    <None Include="shaders\precompute_brdfLut_vert.vs" />
     <None Include="shaders\prefilter_env_map_frag.fs" />
     <None Include="shaders\prefilter_env_map_vert.vs" />
     <None Include="shaders\skybox_frag.fs" />
