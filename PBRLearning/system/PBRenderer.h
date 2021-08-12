@@ -5,6 +5,7 @@
 #include "../objects/MeshMgr.h"
 #include "../shaders/ShaderMgr.h"
 #include "../textures/TextureMgr.h"
+#include "../drawable/Drawable.h"
 
 class PBRenderer
 {
@@ -16,6 +17,8 @@ private:
 	MeshMgr::ptr meshMgr;
 	ShaderMgr::ptr shaderMgr;
 	TextureMgr::ptr textureMgr;
+	DrawableList::ptr drawableList;
+
 
 public:
 	typedef std::shared_ptr<PBRenderer> ptr;
@@ -30,7 +33,10 @@ public:
 	TextureMgr::ptr getTextureMgr() { return textureMgr; }
 
 	void initialzie(int width, int height);
-	void render();
 
+	void addDrawable(Drawable* target) { drawableList->addDrawable(target); }
+
+	void render_simplescene();
+	void render();
 };
 

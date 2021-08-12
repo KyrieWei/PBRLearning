@@ -26,6 +26,13 @@ const float ZOOM = 45.0f;
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class Camera
 {
+private:
+    float aspect;
+    float near;
+    float far;
+    glm::mat4 projectionMatrix;
+    glm::mat4 viewMatrix;
+
 public:
     // camera Attributes
     glm::vec3 Position;
@@ -62,10 +69,25 @@ public:
         updateCameraVectors();
     }
 
+    //set projection params
+    void setPerspectiveProject(float aspect, float near, float far)
+    {
+        this->aspect = aspect;
+        this->near = near;
+        this->far = far;
+
+        projectionMatrix = glm::perspective(Zoom, aspect, near, far);
+    }
+
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix() const
     {
         return glm::lookAt(Position, Position + Front, Up);
+    }
+    // return the projection matrix
+    glm::mat4 GetProjectMatrix() const
+    {
+        return projectionMatrix;
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)

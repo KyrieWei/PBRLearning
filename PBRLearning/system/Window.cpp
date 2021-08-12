@@ -69,8 +69,12 @@ void Window::initialize()
     pbrenderer->initialzie(width, height);
 
     //simplescene = std::shared_ptr<simpleScene>(new simpleScene());
-    simplescene = std::make_shared<simpleScene>();
-    simplescene->initializeScene(pbrenderer);
+    //simplescene = std::make_shared<simpleScene>();
+    //simplescene->initializeScene(pbrenderer);
+
+    felLordScene = std::shared_ptr<FelLordScene>(new FelLordScene());
+    felLordScene->initializeScene(pbrenderer);
+    
 }
 
 void Window::beginFrame()

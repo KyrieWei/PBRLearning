@@ -10,9 +10,11 @@ void PBRenderer::initialzie(int _width, int _height)
 	meshMgr = MeshMgr::getSingleton();
 	shaderMgr = ShaderMgr::getSingleton();
 	textureMgr = TextureMgr::getSingleton();
+
+	drawableList = std::make_shared<DrawableList>();
 }
 
-void PBRenderer::render()
+void PBRenderer::render_simplescene()
 {
 	glm::vec3 lightPositions[4] =
 	{
@@ -98,3 +100,10 @@ void PBRenderer::render()
 
 }
 
+void PBRenderer::render()
+{
+	if (drawableList == nullptr)
+		return;
+
+	drawableList->render();
+}

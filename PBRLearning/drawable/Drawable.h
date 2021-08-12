@@ -17,6 +17,9 @@ class Drawable
 protected:
 	unsigned int shaderIndex;
 	std::vector<unsigned int> meshIndex;
+	std::vector<PBRMaterial> texIndex;
+
+	bool visible = true;
 
 public:
 	typedef std::shared_ptr<Drawable> ptr;
@@ -26,6 +29,9 @@ public:
 
 	virtual void render(Shader::ptr shader = nullptr) = 0;
 	virtual void renderDepth(Shader::ptr shader) = 0;
+
+protected:
+	void renderImp();
 };
 
 class DrawableList : public Drawable

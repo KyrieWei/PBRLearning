@@ -89,4 +89,7 @@ void FelLordScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(10, 25, 25), "Sphere");
 
 	PBRMaterial mat;
+
+	pbrrenderer->addDrawable(lamp);
+
 }

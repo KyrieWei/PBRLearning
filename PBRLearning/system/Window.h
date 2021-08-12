@@ -14,6 +14,8 @@ private:
 	GLFWwindow* window;
 	PBRenderer::ptr pbrenderer;
 	simpleScene::ptr simplescene;
+	FelLordScene::ptr felLordScene;
+
 public:
 	typedef std::shared_ptr<Window> ptr;
 

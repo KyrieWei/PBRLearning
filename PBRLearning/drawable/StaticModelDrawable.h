@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Drawable.h"
+#include "../tools/Camera.h"
 
 class aiMesh;
 class aiNode;
@@ -11,13 +12,15 @@ class StaticModelDrawable : public Drawable
 private:
 	std::string directory;
 
+
+
 public:
 	typedef std::shared_ptr<StaticModelDrawable> ptr;
 
 	StaticModelDrawable(unsigned int shaderIndex, const std::string& path);
 	~StaticModelDrawable();
 
-	virtual void render(Shader::ptr shader = nullptr);
+	virtual void render(Camera::ptr camera, Shader::ptr shader = nullptr);
 	virtual void renderDepth(Shader::ptr shader);
 
 private:
