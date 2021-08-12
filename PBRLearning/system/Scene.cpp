@@ -88,4 +88,5 @@ void FelLordScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	unsigned int planeMeshIndex = meshMgr->loadMesh(new Plane(900, 900), "Plane");
 	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(10, 25, 25), "Sphere");
 
+	PBRMaterial mat;
 }
