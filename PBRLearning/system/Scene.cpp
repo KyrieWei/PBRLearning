@@ -80,16 +80,20 @@ void FelLordScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	TextureMgr::ptr textureMgr = pbrrenderer->getTextureMgr();
 
 	//shaders 
+	unsigned int simpleShader = shaderMgr->loadShader("simpleShader", "shaders/diffuse_shader_vert.vs", "shaders/diffuse_shader_frag.fs");
 	unsigned int pbrShader = shaderMgr->loadShader("pbrShader", "shaders/pbr_vert.vs", "shaders/pbr_frag.fs");
 
 	//models
-	StaticModelDrawable* lamp = new StaticModelDrawable(pbrShader, "assets/lamp/lamp.obj");
+	StaticModelDrawable* lamp = new StaticModelDrawable(simpleShader, "assets/lamp/lamp.obj", "lamp");
 
 	unsigned int planeMeshIndex = meshMgr->loadMesh(new Plane(900, 900), "Plane");
-	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(10, 25, 25), "Sphere");
+	unsigned int sphereMeshIndex = meshMgr->loadMesh(new Sphere(1, 25, 25), "Sphere");
 
 	PBRMaterial mat;
 
-	pbrrenderer->addDrawable(lamp);
+	SimpleDrawable* sphere1 = new SimpleDrawable(simpleShader);
+	sphere1->addMesh(sphereMeshIndex);
 
+	//pbrrenderer->addDrawable(lamp);
+	pbrrenderer->addDrawable(sphere1);
 }

@@ -183,6 +183,8 @@
   <ItemGroup>
     <None Include="shaders\debug_frag.fs" />
     <None Include="shaders\debug_vert.vs" />
+    <None Include="shaders\diffuse_shader_frag.fs" />
+    <None Include="shaders\diffuse_shader_vert.vs" />
     <None Include="shaders\hdrToCubemap_frag.fs" />
     <None Include="shaders\hdrToCubemap_vert.vs" />
     <None Include="shaders\irradiance_convolution_frag.fs" />

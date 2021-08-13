@@ -41,6 +41,7 @@ public:
 	typedef std::shared_ptr<Mesh> ptr;
 
 	Mesh() = default;
+	Mesh(const std::vector<Vertex>& vert, const std::vector<unsigned int>& indi);
 
 	virtual ~Mesh();
 

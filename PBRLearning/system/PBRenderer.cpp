@@ -105,5 +105,8 @@ void PBRenderer::render()
 	if (drawableList == nullptr)
 		return;
 
-	drawableList->render();
+	//set camera
+	camera->setPerspectiveProject((float)width / (float)height, 0.1f, 100.0f);
+
+	drawableList->render(camera);
 }

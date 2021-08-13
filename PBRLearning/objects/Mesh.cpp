@@ -1,7 +1,10 @@
 #include "Mesh.h"
 #include <glad/glad.h>
 
-
+Mesh::Mesh(const std::vector<Vertex>& vert, const std::vector<unsigned int>& indi)
+{
+	setupMesh(vert, indi);
+}
 
 Mesh::~Mesh()
 {

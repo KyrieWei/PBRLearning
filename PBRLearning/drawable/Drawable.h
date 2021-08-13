@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include "../tools/Shader.h"
+#include "../tools/Camera.h"
 
 class PBRMaterial
 {
@@ -27,8 +28,11 @@ public:
 	Drawable() = default;
 	virtual ~Drawable() = default;
 
-	virtual void render(Shader::ptr shader = nullptr) = 0;
+	virtual void render(Camera::ptr camera) = 0;
 	virtual void renderDepth(Shader::ptr shader) = 0;
+
+	void addPbrTexture(PBRMaterial matIndex) { texIndex.push_back(matIndex); }
+	void addMesh(unsigned int meshIndex) { this->meshIndex.push_back(meshIndex); }
 
 protected:
 	void renderImp();
@@ -52,10 +56,10 @@ public:
 		return list.size() - 1;
 	}
 
-	virtual void render(Shader::ptr shader = nullptr)
+	virtual void render(Camera::ptr camera)
 	{
 		for (auto& it : list)
-			it->render(shader);
+			it->render(camera);
 	}
 
 	virtual void renderDepth(Shader::ptr shader)
@@ -63,5 +67,19 @@ public:
 		for (auto& it : list)
 			it->renderDepth(shader);
 	}
+};
+
+class SimpleDrawable : public Drawable
+{
+public:
+	SimpleDrawable(unsigned int shaderIndex)
+	{
+		this->shaderIndex = shaderIndex;
+	}
+
+	~SimpleDrawable() = default;
+
+	virtual void render(Camera::ptr camera);
+	virtual void renderDepth(Shader::ptr shader);
 };
 
