@@ -1,4 +1,6 @@
 #include "PBRenderer.h"
+#include "../postprocess/IBLAuxiliary.h"
+#include "../objects/Geometry.h"
 
 void PBRenderer::initialzie(int _width, int _height)
 {
@@ -12,6 +14,32 @@ void PBRenderer::initialzie(int _width, int _height)
 	textureMgr = TextureMgr::getSingleton();
 
 	drawableList = std::make_shared<DrawableList>();
+
+	deferredShading = std::shared_ptr<DeferredShading>(new DeferredShading(width, height));
+
+	camera->setInitialStatus(glm::vec3(50.0f, 50.0f, 50.0f), glm::vec3(-0.2f, 1.0f, -0.4f), -480.0f, -24.0f);
+	camera->setMovementSpeed(30.0f);
+}
+
+void PBRenderer::setSkyDomeHDR(const std::string& path)
+{
+	if (skyDome != nullptr)
+		return;
+
+	unsigned int skyboxShader = shaderMgr->loadShader("skybox", "shaders/skybox_vert.vs", "shaders/skybox_frag.fs");
+	unsigned int hdrTexIndex = textureMgr->loadTexture2DHDR("hdrTex", path);
+	unsigned int cubeTexIndex = textureMgr->loadTextureCubeHDR("skyboxCubemap", nullptr, 1024, 1024);
+
+	//convert hdrmap to cubemap
+	unsigned int hdrToCubemapShader = shaderMgr->loadShader("hdrToCubeShader", "shaders/hdrToCubemap_vert.vs", "shaders/hdrToCubemap_frag.fs");
+	IBLAuxiliary::convertToCubemap(1024, 1024, hdrTexIndex, cubeTexIndex);
+
+	unsigned int mesh = meshMgr->loadMesh(new Sphere(1, 25, 25));
+	skyDome = std::make_shared<SkyDome>(skyboxShader);
+	PBRMaterial mat;
+	mat.albedoTexIndex = cubeTexIndex;
+	skyDome->addMesh(mesh);
+	skyDome->addPbrTexture(mat);
 }
 
 void PBRenderer::render_simplescene()
@@ -49,7 +77,7 @@ void PBRenderer::render_simplescene()
 	textureMgr->bindTexture("skyboxPrefilterMap", 1);
 	textureMgr->bindTexture("brdfLutMap", 2);
 
-	Mesh::ptr mesh = meshMgr->getMesh("Sphere");
+	Mesh::ptr mesh = std::shared_ptr<Mesh>(new Sphere(1, 25, 25));
 
 	//draw pbr balls
 	glm::mat4 model;
@@ -106,7 +134,18 @@ void PBRenderer::render()
 		return;
 
 	//set camera
-	camera->setPerspectiveProject((float)width / (float)height, 0.1f, 100.0f);
+	camera->setPerspectiveProject((float)width / (float)height, 0.1f, 1000.0f);
 
+	//render to g-buffers
+	deferredShading->bindDeferredFramebuffer();
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	drawableList->render(camera);
+	
+
+	//deferred shading
+	deferredShading->renderDeferredShading(camera);
+
+	skyDome->render(camera);
 }

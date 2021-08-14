@@ -79,6 +79,28 @@ public:
 		return objects.size() - 1;
 	}
 
+	unsigned int loadTextureColor(const std::string& name, int width, int height, bool hdr = false)
+	{
+		if (objectsMap.find(name) != objectsMap.end())
+			return objectsMap[name];
+
+		Texture::ptr tex(new TextureColor(width, height, hdr));
+		objects.push_back(tex);
+		objectsMap[name] = objects.size() - 1;
+		return objects.size() - 1;
+	}
+
+	unsigned int loadTextureDepth(const std::string& name, int width, int height)
+	{
+		if (objectsMap.find(name) != objectsMap.end())
+			return objectsMap[name];
+
+		Texture::ptr tex(new TextureDepth(width, height));
+		objects.push_back(tex);
+		objectsMap[name] = objects.size() - 1;
+		return objects.size() - 1;
+	}
+
 	Texture::ptr getTexture(const std::string& name)
 	{
 		if (objectsMap.find(name) == objectsMap.end())

@@ -11,7 +11,6 @@
 StaticModelDrawable::StaticModelDrawable(unsigned int shaderIndex, const std::string& path, const std::string& name)
 {
 	this->shaderIndex = shaderIndex;
-	this->name = name;
 	loadModel(path);
 }
 
@@ -37,7 +36,7 @@ void StaticModelDrawable::render(Camera::ptr camera)
 
 	//object matrix
 	//shader->setBool("instance", false);
-	shader->setMat4("model", glm::mat4(1.0));
+	shader->setMat4("model", transformation.getWorldMatrix());
 	shader->setMat4("view", camera->GetViewMatrix());
 	shader->setMat4("projection", camera->GetProjectMatrix());
 
@@ -61,7 +60,16 @@ void StaticModelDrawable::loadModel(const std::string& path)
 	}
 
 	directory = path.substr(0, path.find_last_of('/'));
-	processNode(scene->mRootNode, scene);
+	//processNode(scene->mRootNode, scene);
+	for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[i];
+		unsigned int meshIndex;
+		PBRMaterial pbrMat;
+		processMesh(mesh, scene, meshIndex, pbrMat);
+		this->addMesh(meshIndex);
+		this->addPbrTexture(pbrMat);
+	}
 }
 
 void StaticModelDrawable::processNode(aiNode* node, const aiScene* scene)
@@ -117,7 +125,7 @@ void StaticModelDrawable::processMesh(aiMesh* mesh, const aiScene* scene, unsign
 	}
 
 	Mesh* target = new Mesh(vertices, indices);
-	meshIndex = MeshMgr::getSingleton()->loadMesh(target, name);
+	meshIndex = MeshMgr::getSingleton()->loadMesh(target);
 
 	//process pbr material
 	TextureMgr::ptr textureMgr = TextureMgr::getSingleton();

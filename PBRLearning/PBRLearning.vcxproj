@@ -142,11 +142,13 @@
   <ItemGroup>
     <ClCompile Include="drawable\Drawable.cpp" />
     <ClCompile Include="drawable\StaticModelDrawable.cpp" />
+    <ClCompile Include="drawable\Transform3D.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="objects\FrameBuffer.cpp" />
     <ClCompile Include="objects\Mesh.cpp" />
     <ClCompile Include="objects\Geometry.cpp" />
     <ClCompile Include="objects\MeshMgr.cpp" />
+    <ClCompile Include="postprocess\DeferredShading.cpp" />
     <ClCompile Include="postprocess\IBLAuxiliary.cpp" />
     <ClCompile Include="shaders\ShaderMgr.cpp" />
     <ClCompile Include="system\PBRenderer.cpp" />
@@ -161,10 +163,12 @@
   <ItemGroup>
     <ClInclude Include="drawable\Drawable.h" />
     <ClInclude Include="drawable\StaticModelDrawable.h" />
+    <ClInclude Include="drawable\Transform3D.h" />
     <ClInclude Include="objects\FrameBuffer.h" />
     <ClInclude Include="objects\Mesh.h" />
     <ClInclude Include="objects\Geometry.h" />
     <ClInclude Include="objects\MeshMgr.h" />
+    <ClInclude Include="postprocess\DeferredShading.h" />
     <ClInclude Include="postprocess\IBLAuxiliary.h" />
     <ClInclude Include="shaders\ShaderMgr.h" />
     <ClInclude Include="system\PBRenderer.h" />

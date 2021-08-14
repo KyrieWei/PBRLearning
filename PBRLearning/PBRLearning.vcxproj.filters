@@ -87,6 +87,12 @@
     <ClCompile Include="drawable\StaticModelDrawable.cpp">
       <Filter>drawable</Filter>
     </ClCompile>
+    <ClCompile Include="drawable\Transform3D.cpp">
+      <Filter>drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="postprocess\DeferredShading.cpp">
+      <Filter>postprocess</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools\Camera.h">
@@ -148,6 +154,12 @@
     </ClInclude>
     <ClInclude Include="drawable\StaticModelDrawable.h">
       <Filter>drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="drawable\Transform3D.h">
+      <Filter>drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="postprocess\DeferredShading.h">
+      <Filter>postprocess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

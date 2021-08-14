@@ -74,6 +74,8 @@ void Window::initialize()
 
     felLordScene = std::shared_ptr<FelLordScene>(new FelLordScene());
     felLordScene->initializeScene(pbrenderer);
+
+    pbrenderer->setSkyDomeHDR("assets/HDR/Hamarikyu_Bridge.hdr");
     
 }
 

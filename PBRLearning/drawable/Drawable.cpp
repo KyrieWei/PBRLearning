@@ -37,9 +37,12 @@ void SimpleDrawable::render(Camera::ptr camera)
 	Shader::ptr shader = ShaderMgr::getSingleton()->getShader(shaderIndex);
 	shader->use();
 
-	shader->setInt("albedomap", 0);
+	shader->setInt("albedoMap", 0);
+	shader->setInt("normalMap", 1);
+	shader->setInt("roughnessMap", 2);
+	shader->setInt("metallicMap", 3); 
 	
-	shader->setMat4("model", glm::mat4(1.0));
+	shader->setMat4("model", transformation.getWorldMatrix());
 	shader->setMat4("view", camera->GetViewMatrix());
 	shader->setMat4("projection", camera->GetProjectMatrix());
 
@@ -47,6 +50,24 @@ void SimpleDrawable::render(Camera::ptr camera)
 }
 
 void SimpleDrawable::renderDepth(Shader::ptr shader)
+{
+
+}
+
+void SkyDome::render(Camera::ptr camera)
+{
+	if (!visible) return;
+
+	Shader::ptr shader = ShaderMgr::getSingleton()->getShader(shaderIndex);
+	shader->use();
+
+	shader->setInt("environmentMap", 0);
+	shader->setMat4("view", glm::mat4(glm::mat3(camera->GetViewMatrix())));
+	shader->setMat4("projection", camera->GetProjectMatrix());
+	this->renderImp();
+}
+
+void SkyDome::renderDepth(Shader::ptr shader)
 {
 
 }

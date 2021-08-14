@@ -6,14 +6,22 @@
 #include "../shaders/ShaderMgr.h"
 #include "../textures/TextureMgr.h"
 #include "../drawable/Drawable.h"
+#include "../postprocess/DeferredShading.h"
 
 class PBRenderer
 {
 private:
 	int width, height;
 
+	//skydome
+	SkyDome::ptr skyDome;
+
 	Camera::ptr camera;
 
+	//deferred shading
+	DeferredShading::ptr deferredShading;
+
+	//manager
 	MeshMgr::ptr meshMgr;
 	ShaderMgr::ptr shaderMgr;
 	TextureMgr::ptr textureMgr;
@@ -33,6 +41,7 @@ public:
 	TextureMgr::ptr getTextureMgr() { return textureMgr; }
 
 	void initialzie(int width, int height);
+	void setSkyDomeHDR(const std::string& path);
 
 	void addDrawable(Drawable* target) { drawableList->addDrawable(target); }
 

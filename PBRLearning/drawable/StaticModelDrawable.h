@@ -11,7 +11,6 @@ class StaticModelDrawable : public Drawable
 {
 private:
 	std::string directory;
-	std::string name;
 public:
 	typedef std::shared_ptr<StaticModelDrawable> ptr;
 

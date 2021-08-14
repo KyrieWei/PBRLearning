@@ -38,7 +38,7 @@ void IBLAuxiliary::convertToCubemap(int width, int height, unsigned int hdrTexIn
 
 	GLuint cubemapId = textureMgr->getTexture(cubemapTexIndex)->getTextureID();
 	Shader::ptr shader = shaderMgr->getShader("hdrToCubeShader");
-	Mesh::ptr cubeMesh = meshMgr->getMesh("Cube");
+	Mesh::ptr cubeMesh = std::shared_ptr<Mesh>(new Cube(1.0f, 1.0f, 1.0f));
 
 	shader->use();
 	shader->setMat4("projection", captureProjectMatrix);
@@ -90,7 +90,7 @@ void IBLAuxiliary::convoluteDiffuseIntegral(int width, int height, unsigned int 
 
 	GLuint irradianceTexID = textureMgr->getTexture(irradianceTexIndex)->getTextureID();
 	Shader::ptr shader = shaderMgr->getShader("skyboxConvShader");
-	Mesh::ptr cubeMesh = meshMgr->getMesh("Cube");
+	Mesh::ptr cubeMesh = std::shared_ptr<Mesh>(new Cube(1.0f, 1.0f, 1.0f));
 
 	shader->use();
 	shader->setMat4("projection", captureProjectMatrix);
@@ -130,7 +130,7 @@ void IBLAuxiliary::convoluteSpecularIntegral(int width, int height, unsigned int
 	//begin to filter
 	GLuint prefilteredTexId = texMgr->getTexture(prefilteredTexIndex)->getTextureID();
 	Shader::ptr shader = shaderMgr->getShader("skyboxPrefilterShader");
-	Mesh::ptr cubeMesh = meshMgr->getMesh("Cube");
+	Mesh::ptr cubeMesh = std::shared_ptr<Mesh>(new Cube(1.0f, 1.0f, 1.0f));
 	shader->use();
 	shader->setMat4("projection", captureProjectMatrix);
 	texMgr->bindTexture(cubemapTexIndex, 0);
@@ -176,7 +176,7 @@ void IBLAuxiliary::convoluteSpecularBRDFIntegral(int width, int height, unsigned
 	FrameBuffer::ptr framebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "brdfDepth", {}, true));
 
 	Shader::ptr shader = shaderMgr->getShader("skyboxPrecomputeBRDFShader");
-	Mesh::ptr quadMesh = meshMgr->getMesh("Quad");
+	Mesh::ptr quadMesh = std::shared_ptr<Mesh>(new ScreenQuad());
 
 	framebuffer->bind();
 	glDisable(GL_BLEND);

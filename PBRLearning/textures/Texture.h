@@ -96,3 +96,38 @@ private:
 	virtual void clearTexture();
 };
 
+
+class TextureColor : public Texture
+{
+private:
+	bool hdr;
+	int width, height;
+
+public:
+	TextureColor(int width, int height, bool hdr = false);
+	~TextureColor();
+
+	virtual void bind(unsigned int unit);
+	virtual void unbind();
+
+private:
+	virtual void setupTexture(const std::string& path, const std::string& pFix);
+	virtual void clearTexture();
+};
+
+class TextureDepth : public Texture
+{
+private:
+	int width, height;
+
+public:
+	TextureDepth(int width, int height);
+	~TextureDepth();
+
+	virtual void bind(unsigned int unit);
+	virtual void unbind();
+
+private:
+	virtual void setupTexture(const std::string& path, const std::string& pFix);
+	virtual void clearTexture();
+};

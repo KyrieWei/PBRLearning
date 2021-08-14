@@ -3,6 +3,7 @@
 #include <memory>
 #include "../tools/Shader.h"
 #include "../tools/Camera.h"
+#include "Transform3D.h"
 
 class PBRMaterial
 {
@@ -21,6 +22,7 @@ protected:
 	std::vector<PBRMaterial> texIndex;
 
 	bool visible = true;
+	Transform3D transformation;
 
 public:
 	typedef std::shared_ptr<Drawable> ptr;
@@ -30,6 +32,10 @@ public:
 
 	virtual void render(Camera::ptr camera) = 0;
 	virtual void renderDepth(Shader::ptr shader) = 0;
+
+	void setVisible(bool target) { visible = target; }
+	bool isVisible() const { return visible; }
+	Transform3D* getTransformation() { return &transformation; }
 
 	void addPbrTexture(PBRMaterial matIndex) { texIndex.push_back(matIndex); }
 	void addMesh(unsigned int meshIndex) { this->meshIndex.push_back(meshIndex); }
@@ -83,3 +89,18 @@ public:
 	virtual void renderDepth(Shader::ptr shader);
 };
 
+class SkyDome : public Drawable
+{
+public:
+	typedef std::shared_ptr<SkyDome> ptr;
+
+	SkyDome(unsigned int shaderIndex)
+	{
+		this->shaderIndex = shaderIndex;
+	}
+
+	SkyDome() = default;
+
+	virtual void render(Camera::ptr camera);
+	virtual void renderDepth(Shader::ptr shader);
+};

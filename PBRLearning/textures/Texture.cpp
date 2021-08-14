@@ -280,3 +280,99 @@ TextureCubeHDR::~TextureCubeHDR()
 {
 	clearTexture();
 }
+
+TextureColor::TextureColor(int width, int height, bool hdr)
+{
+	this->width = width;
+	this->height = height;
+	this->hdr = hdr;
+
+	setupTexture("", "");
+}
+
+TextureColor::~TextureColor()
+{
+	clearTexture();
+}
+
+void TextureColor::setupTexture(const std::string& path, const std::string& pFix)
+{
+	//generate texture
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	if (!hdr)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB16F, GL_FLOAT, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureColor::bind(unsigned int unit)
+{
+	glActiveTexture(GL_TEXTURE0 + unit);
+	glBindTexture(GL_TEXTURE_2D, id);
+}
+
+void TextureColor::unbind()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureColor::clearTexture()
+{
+	glDeleteTextures(1, &id);
+}
+
+TextureDepth::TextureDepth(int width, int height)
+{
+	this->width = width;
+	this->height = height;
+
+	setupTexture("", "");
+}
+
+TextureDepth::~TextureDepth()
+{
+	clearTexture();
+}
+
+void TextureDepth::setupTexture(const std::string& name, const std::string& pFix)
+{
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureDepth::bind(unsigned int unit)
+{
+	glActiveTexture(GL_TEXTURE0 + unit);
+	glBindTexture(GL_TEXTURE_2D, id);
+}
+
+void TextureDepth::unbind()
+{
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureDepth::clearTexture()
+{
+	glDeleteTextures(1, &id);
+}
