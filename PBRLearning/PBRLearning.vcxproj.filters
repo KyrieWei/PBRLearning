@@ -93,6 +93,9 @@
     <ClCompile Include="postprocess\DeferredShading.cpp">
       <Filter>postprocess</Filter>
     </ClCompile>
+    <ClCompile Include="system\Light.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools\Camera.h">
@@ -161,6 +164,9 @@
     <ClInclude Include="postprocess\DeferredShading.h">
       <Filter>postprocess</Filter>
     </ClInclude>
+    <ClInclude Include="system\Light.h">
+      <Filter>system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\pbr_vert.vs">
@@ -209,6 +215,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\diffuse_shader_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="pbrDeferredShading_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="pbrDeferredShading_frag.fs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

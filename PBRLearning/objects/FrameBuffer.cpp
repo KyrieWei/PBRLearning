@@ -22,16 +22,15 @@ FrameBuffer::FrameBuffer(int width_, int height_, const std::string& depthName, 
 	if (colorName.size() > 0)
 		glDrawBuffers(colorName.size(), ColorAttachments);
 
-	//unsigned int captureRBO;
-	//glGenRenderbuffers(1, &captureRBO);
+	//GLuint rboDepth;
+	//glGenRenderbuffers(1, &rboDepth);
+	//glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 
-	//glBindFramebuffer(GL_FRAMEBUFFER, id);
-	//glBindRenderbuffer(GL_RENDERBUFFER, captureRBO);
-	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
-	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, captureRBO);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "Framebuffer not complete!" << std::endl;
+	auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "Framebuffer not complete: " << fboStatus << std::endl;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -56,6 +55,7 @@ void FrameBuffer::setupColorFramebuffer(const std::string& name, unsigned int at
 	TextureMgr::ptr textureMgr = TextureMgr::getSingleton();
 	colorTexIndex[attachIndex] = textureMgr->loadTextureColor(name, width, height, hdr);
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
+	//std::cout << "texture id: " << textureMgr->getTexture(colorTexIndex[attachIndex])->getTextureID() << std::endl;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachIndex, GL_TEXTURE_2D, textureMgr->getTexture(colorTexIndex[attachIndex])->getTextureID(), 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

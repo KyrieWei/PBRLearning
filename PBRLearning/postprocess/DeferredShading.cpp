@@ -7,7 +7,7 @@
 DeferredShading::DeferredShading(int width, int height)
 {
 	screenQuadIndex = MeshMgr::getSingleton()->loadMesh(new ScreenQuad());
-	deferredShaderIndex = ShaderMgr::getSingleton()->loadShader("deferredShader", "", "");
+	deferredShaderIndex = ShaderMgr::getSingleton()->loadShader("deferredShader", "shaders/pbrDeferredShading_frag.vs", "shaders/pbrDeferredShading_frag.fs");
 	deferredFramebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "deferredDepth", { "deferredPos", "deferredNormal", "deferredAlbedo", "deferredRoughness" }, true));
 }
 
@@ -21,10 +21,10 @@ void DeferredShading::renderDeferredShading(Camera::ptr camera)
 	Shader::ptr deferredShader = ShaderMgr::getSingleton()->getShader(deferredShaderIndex);
 
 	deferredShader->use();
-	deferredShader->setInt("gPostion", 0);
+	deferredShader->setInt("gPosition", 0);
 	deferredShader->setInt("gNormal", 1);
 	deferredShader->setInt("gAlbedo", 2);
-	deferredShader->setInt("gRoughness", 3);
+	deferredShader->setInt("gOverall", 3);
 	
 	TextureMgr::ptr texMgr = TextureMgr::getSingleton();
 	texMgr->bindTexture("deferredPos", 0);

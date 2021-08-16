@@ -142,10 +142,13 @@ void PBRenderer::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	drawableList->render(camera);
-	
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//deferred shading
 	deferredShading->renderDeferredShading(camera);
+
+
 
 	skyDome->render(camera);
 }

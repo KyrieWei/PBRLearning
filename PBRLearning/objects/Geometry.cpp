@@ -123,6 +123,11 @@ Sphere::Sphere(float radius, int numRings, int numSegments)
 				static_cast<float>(seg) / static_cast<float>(numSegments), static_cast<float>(ring) / static_cast<float>(numRings),
 				vNormal.x, vNormal.y, vNormal.z);
 
+			glm::vec3 tangent, bitangent;
+			generateTangentAndBitangent(vNormal, tangent, bitangent);
+			v.tangent = tangent;
+			v.bitangent = bitangent;
+
 			vertices.push_back(v);
 
 			if (ring != numRings)

@@ -57,5 +57,6 @@ public:
 protected:
 	void setupMesh(const std::vector<Vertex> vertices_, const std::vector<unsigned int>& indices_);
 	void clearMesh();
+	void generateTangentAndBitangent(const glm::vec3& normal, glm::vec3& tangent, glm::vec3& bitangent);
 };
 

@@ -72,3 +72,12 @@ void Mesh::clearMesh()
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 }
+
+void Mesh::generateTangentAndBitangent(const glm::vec3& normal, glm::vec3& tangent, glm::vec3& bitangent)
+{
+	glm::vec3 up = glm::vec3(0, 1, 0);
+	if (normal == up)
+		up = glm::vec3(1, 0, 0);
+	tangent = glm::cross(normal, up);
+	bitangent = glm::cross(tangent, normal);
+}

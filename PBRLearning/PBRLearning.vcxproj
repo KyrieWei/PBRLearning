@@ -151,6 +151,7 @@
     <ClCompile Include="postprocess\DeferredShading.cpp" />
     <ClCompile Include="postprocess\IBLAuxiliary.cpp" />
     <ClCompile Include="shaders\ShaderMgr.cpp" />
+    <ClCompile Include="system\Light.cpp" />
     <ClCompile Include="system\PBRenderer.cpp" />
     <ClCompile Include="system\Scene.cpp" />
     <ClCompile Include="system\Window.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="postprocess\DeferredShading.h" />
     <ClInclude Include="postprocess\IBLAuxiliary.h" />
     <ClInclude Include="shaders\ShaderMgr.h" />
+    <ClInclude Include="system\Light.h" />
     <ClInclude Include="system\PBRenderer.h" />
     <ClInclude Include="system\Scene.h" />
     <ClInclude Include="system\Window.h" />
@@ -185,6 +187,8 @@
     <ClInclude Include="tools\Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="pbrDeferredShading_frag.fs" />
+    <None Include="pbrDeferredShading_vert.vs" />
     <None Include="shaders\debug_frag.fs" />
     <None Include="shaders\debug_vert.vs" />
     <None Include="shaders\diffuse_shader_frag.fs" />
