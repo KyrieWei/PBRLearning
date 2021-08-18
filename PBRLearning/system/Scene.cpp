@@ -16,11 +16,7 @@ void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	//shaders
 	unsigned int debugShader = shaderMgr->loadShader("debug", "shaders/debug_vert.vs", "shaders/debug_frag.fs");
 	unsigned int pbrShader = shaderMgr->loadShader("pbrShader", "shaders/pbr_vert.vs", "shaders/pbr_frag.fs");
-	unsigned int hdrToCubemapShader = shaderMgr->loadShader("hdrToCubeShader", "shaders/hdrToCubemap_vert.vs", "shaders/hdrToCubemap_frag.fs");
 	unsigned int skyboxShader = shaderMgr->loadShader("skyboxShader", "shaders/skybox_vert.vs", "shaders/skybox_frag.fs");
-	unsigned int skyboxConvShader = shaderMgr->loadShader("skyboxConvShader", "shaders/irradiance_convolution_vert.vs", "shaders/irradiance_convolution_frag.fs");
-	unsigned int skyboxPrefilterShader = shaderMgr->loadShader("skyboxPrefilterShader", "shaders/prefilter_env_map_vert.vs", "shaders/prefilter_env_map_frag.fs");
-	unsigned int skyboxPrecomputeBRDFShader = shaderMgr->loadShader("skyboxPrecomputeBRDFShader", "shaders/precompute_brdfLut_vert.vs", "shaders/precompute_brdfLut_frag.fs");
 
 	//pbr shader
 	Shader::ptr shader = shaderMgr->getShader("pbrShader");
@@ -28,22 +24,6 @@ void simpleScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	shader->setInt("irradianceMap", 0);
 	shader->setInt("prefilterMap", 1);
 	shader->setInt("brdfLUT", 2);
-
-	//hdr to cube map
-	shader = shaderMgr->getShader("hdrToCubeShader");
-	shader->use();
-	shader->setInt("equirectangularMap", 0);
-
-	//conv sky box shader
-	shader = shaderMgr->getShader("skyboxConvShader");
-	shader->use();
-	shader->setInt("environmentMap", 0);
-
-	//prefilter sky box specular
-	shader = shaderMgr->getShader("skyboxPrefilterShader");
-	shader->use();
-	shader->setInt("environmentMap", 0);
-
 
 	//sky box shader
 	shader = shaderMgr->getShader("skyboxShader");
@@ -137,4 +117,23 @@ void FelLordScene::initializeScene(PBRenderer::ptr pbrrenderer)
 	pbrrenderer->addDrawable(sphere1);
 	pbrrenderer->addDrawable(sphere2);
 	pbrrenderer->addDrawable(floor);
+
+
+	srand(time(nullptr));
+	for (unsigned int i = 0; i < 128; i++)
+	{
+		glm::vec3 pos;
+		glm::vec3 radiance;
+
+		pos.x = -200.0f + (((double)rand()) / RAND_MAX) * 400.0f;
+		pos.y = 3.0f;
+		pos.z = -200.0f + (((double)rand()) / RAND_MAX) * 400.0f;
+		radiance.x = (((double)rand()) / RAND_MAX) * 80;
+		radiance.y = (((double)rand()) / RAND_MAX) * 80;
+		radiance.z = (((double)rand()) / RAND_MAX) * 80;
+
+		pbrrenderer->addPointLight(pos, radiance);
+	}
+
+	pbrrenderer->setSunLight(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f));
 }

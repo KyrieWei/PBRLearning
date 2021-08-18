@@ -187,8 +187,6 @@
     <ClInclude Include="tools\Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="pbrDeferredShading_frag.fs" />
-    <None Include="pbrDeferredShading_vert.vs" />
     <None Include="shaders\debug_frag.fs" />
     <None Include="shaders\debug_vert.vs" />
     <None Include="shaders\diffuse_shader_frag.fs" />
@@ -197,6 +195,8 @@
     <None Include="shaders\hdrToCubemap_vert.vs" />
     <None Include="shaders\irradiance_convolution_frag.fs" />
     <None Include="shaders\irradiance_convolution_vert.vs" />
+    <None Include="shaders\pbrDeferredShading_frag.fs" />
+    <None Include="shaders\pbrDeferredShading_vert.vs" />
     <None Include="shaders\pbr_frag.fs" />
     <None Include="shaders\pbr_vert.vs" />
     <None Include="shaders\precompute_brdfLut_frag.fs" />

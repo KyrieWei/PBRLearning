@@ -1,6 +1,7 @@
 #pragma once
 #include "../objects/FrameBuffer.h"
 #include "../tools/Camera.h"
+#include "../system/Light.h"
 class DeferredShading
 {
 private:
@@ -16,6 +17,6 @@ public:
 	~DeferredShading() = default;
 
 	void bindDeferredFramebuffer();
-	void renderDeferredShading(Camera::ptr camera);
+	void renderDeferredShading(Camera::ptr camera, Light::ptr sunLight, const std::vector<PointLight::ptr>& pointLights);
 };
 

@@ -9,6 +9,8 @@ void PBRenderer::initialzie(int _width, int _height)
 
 	camera = std::make_shared<Camera>(Camera(glm::vec3(0.0f, 0.0f, 3.0f)));
 
+	setSunLight(glm::vec3(0.1f, 1.0f, 0.3f), glm::vec3(0.6f));
+
 	meshMgr = MeshMgr::getSingleton();
 	shaderMgr = ShaderMgr::getSingleton();
 	textureMgr = TextureMgr::getSingleton();
@@ -21,6 +23,25 @@ void PBRenderer::initialzie(int _width, int _height)
 	camera->setMovementSpeed(30.0f);
 }
 
+void PBRenderer::addPointLight(glm::vec3 pos, glm::vec3 radiance)
+{
+	if (pointLights.size() > 128)
+		return;
+
+	PointLight::ptr pointLight = std::shared_ptr<PointLight>(new PointLight());
+	pointLight->setPosition(pos, pointLights.size());
+	pointLight->setLightColor(radiance);
+	pointLights.push_back(pointLight);
+}
+
+void PBRenderer::setSunLight(glm::vec3 dir, glm::vec3 radiance)
+{
+	DirectionalLight* light = new DirectionalLight();
+	light->setDirection(dir);
+	light->setLightColor(radiance);
+	sunLight = std::shared_ptr<DirectionalLight>(light);
+}
+
 void PBRenderer::setSkyDomeHDR(const std::string& path)
 {
 	if (skyDome != nullptr)
@@ -31,8 +52,19 @@ void PBRenderer::setSkyDomeHDR(const std::string& path)
 	unsigned int cubeTexIndex = textureMgr->loadTextureCubeHDR("skyboxCubemap", nullptr, 1024, 1024);
 
 	//convert hdrmap to cubemap
-	unsigned int hdrToCubemapShader = shaderMgr->loadShader("hdrToCubeShader", "shaders/hdrToCubemap_vert.vs", "shaders/hdrToCubemap_frag.fs");
 	IBLAuxiliary::convertToCubemap(1024, 1024, hdrTexIndex, cubeTexIndex);
+
+	//precompute the irradiance map
+	unsigned int irradianceTexIndex = textureMgr->loadTextureCubeHDR("irradianceMap", nullptr, 512, 512);
+	IBLAuxiliary::convoluteDiffuseIntegral(512, 512, cubeTexIndex, irradianceTexIndex);
+
+	//prefilter the environment map for specular lighting
+	unsigned int prefilteredTexIndex = textureMgr->loadTextureCubeHDR("prefilteredMap", nullptr, 256, 256, true);
+	IBLAuxiliary::convoluteSpecularIntegral(256, 256, cubeTexIndex, prefilteredTexIndex);
+
+	//generate brdf lookup texture
+	unsigned int brdfLutTexIndex = textureMgr->loadTexture2DHDRRaw("brdfLutMap", nullptr, 512, 512);
+	IBLAuxiliary::convoluteSpecularBRDFIntegral(512, 512, brdfLutTexIndex);
 
 	unsigned int mesh = meshMgr->loadMesh(new Sphere(1, 25, 25));
 	skyDome = std::make_shared<SkyDome>(skyboxShader);
@@ -146,9 +178,7 @@ void PBRenderer::render()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	//deferred shading
-	deferredShading->renderDeferredShading(camera);
-
-
+	deferredShading->renderDeferredShading(camera, sunLight, pointLights);
 
 	skyDome->render(camera);
 }

@@ -217,10 +217,10 @@
     <None Include="shaders\diffuse_shader_frag.fs">
       <Filter>shaders</Filter>
     </None>
-    <None Include="pbrDeferredShading_vert.vs">
+    <None Include="shaders\pbrDeferredShading_frag.fs">
       <Filter>shaders</Filter>
     </None>
-    <None Include="pbrDeferredShading_frag.fs">
+    <None Include="shaders\pbrDeferredShading_vert.vs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

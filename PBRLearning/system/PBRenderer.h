@@ -7,6 +7,7 @@
 #include "../textures/TextureMgr.h"
 #include "../drawable/Drawable.h"
 #include "../postprocess/DeferredShading.h"
+#include "Light.h"
 
 class PBRenderer
 {
@@ -15,6 +16,8 @@ private:
 
 	//skydome
 	SkyDome::ptr skyDome;
+	DirectionalLight::ptr sunLight;
+	std::vector<PointLight::ptr> pointLights;
 
 	Camera::ptr camera;
 
@@ -42,8 +45,9 @@ public:
 
 	void initialzie(int width, int height);
 	void setSkyDomeHDR(const std::string& path);
-
+	void addPointLight(glm::vec3 pos, glm::vec3 radiance);
 	void addDrawable(Drawable* target) { drawableList->addDrawable(target); }
+	void setSunLight(glm::vec3 dir, glm::vec3 radiance);
 
 	void render_simplescene();
 	void render();

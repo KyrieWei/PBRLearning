@@ -12,6 +12,8 @@ void IBLAuxiliary::convertToCubemap(int width, int height, unsigned int hdrTexIn
 	TextureMgr::ptr textureMgr = TextureMgr::getSingleton();
 	MeshMgr::ptr meshMgr = MeshMgr::getSingleton();
 
+	unsigned int hdrToCubemapShader = shaderMgr->loadShader("hdrToCubeShader", "shaders/hdrToCubemap_vert.vs", "shaders/hdrToCubemap_frag.fs");
+
 	//load framebuffer
 	FrameBuffer::ptr framebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "convertDepth", {}, true));
 
@@ -37,10 +39,11 @@ void IBLAuxiliary::convertToCubemap(int width, int height, unsigned int hdrTexIn
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	GLuint cubemapId = textureMgr->getTexture(cubemapTexIndex)->getTextureID();
-	Shader::ptr shader = shaderMgr->getShader("hdrToCubeShader");
+	Shader::ptr shader = shaderMgr->getShader(hdrToCubemapShader);
 	Mesh::ptr cubeMesh = std::shared_ptr<Mesh>(new Cube(1.0f, 1.0f, 1.0f));
 
 	shader->use();
+	shader->setInt("equirectangularMap", 0);
 	shader->setMat4("projection", captureProjectMatrix);
 	textureMgr->bindTexture(hdrTexIndex, 0);
 
@@ -63,6 +66,8 @@ void IBLAuxiliary::convoluteDiffuseIntegral(int width, int height, unsigned int 
 	ShaderMgr::ptr shaderMgr = ShaderMgr::getSingleton();
 	TextureMgr::ptr textureMgr = TextureMgr::getSingleton();
 	MeshMgr::ptr meshMgr = MeshMgr::getSingleton();
+
+	unsigned int skyboxConvShader = shaderMgr->loadShader("skyboxConvShader", "shaders/irradiance_convolution_vert.vs", "shaders/irradiance_convolution_frag.fs");
 
 	//load framebuffer
 	FrameBuffer::ptr framebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "irradianceDepth", {}, true));
@@ -89,10 +94,11 @@ void IBLAuxiliary::convoluteDiffuseIntegral(int width, int height, unsigned int 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	GLuint irradianceTexID = textureMgr->getTexture(irradianceTexIndex)->getTextureID();
-	Shader::ptr shader = shaderMgr->getShader("skyboxConvShader");
+	Shader::ptr shader = shaderMgr->getShader(skyboxConvShader);
 	Mesh::ptr cubeMesh = std::shared_ptr<Mesh>(new Cube(1.0f, 1.0f, 1.0f));
 
 	shader->use();
+	shader->setInt("environmentMap", 0);
 	shader->setMat4("projection", captureProjectMatrix);
 	textureMgr->bindTexture(cubemapTexIndex, 0);
 
@@ -116,6 +122,8 @@ void IBLAuxiliary::convoluteSpecularIntegral(int width, int height, unsigned int
 	ShaderMgr::ptr shaderMgr = ShaderMgr::getSingleton();
 	MeshMgr::ptr meshMgr = MeshMgr::getSingleton();
 
+	unsigned int skyboxPrefilterShader = shaderMgr->loadShader("skyboxPrefilterShader", "shaders/prefilter_env_map_vert.vs", "shaders/prefilter_env_map_frag.fs");
+
 	glm::mat4 captureProjectMatrix = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
 	glm::mat4 captureViewMatrix[] =
 	{
@@ -129,9 +137,10 @@ void IBLAuxiliary::convoluteSpecularIntegral(int width, int height, unsigned int
 
 	//begin to filter
 	GLuint prefilteredTexId = texMgr->getTexture(prefilteredTexIndex)->getTextureID();
-	Shader::ptr shader = shaderMgr->getShader("skyboxPrefilterShader");
+	Shader::ptr shader = shaderMgr->getShader(skyboxPrefilterShader);
 	Mesh::ptr cubeMesh = std::shared_ptr<Mesh>(new Cube(1.0f, 1.0f, 1.0f));
 	shader->use();
+	shader->setInt("environmentMap", 0);
 	shader->setMat4("projection", captureProjectMatrix);
 	texMgr->bindTexture(cubemapTexIndex, 0);
 	unsigned int maxMipLevels = 5;
@@ -173,9 +182,11 @@ void IBLAuxiliary::convoluteSpecularBRDFIntegral(int width, int height, unsigned
 	ShaderMgr::ptr shaderMgr = ShaderMgr::getSingleton();
 	MeshMgr::ptr meshMgr = MeshMgr::getSingleton();
 
+	unsigned int skyboxPrecomputeBRDFShader = shaderMgr->loadShader("skyboxPrecomputeBRDFShader", "shaders/precompute_brdfLut_vert.vs", "shaders/precompute_brdfLut_frag.fs");
+
 	FrameBuffer::ptr framebuffer = std::shared_ptr<FrameBuffer>(new FrameBuffer(width, height, "brdfDepth", {}, true));
 
-	Shader::ptr shader = shaderMgr->getShader("skyboxPrecomputeBRDFShader");
+	Shader::ptr shader = shaderMgr->getShader(skyboxPrecomputeBRDFShader);
 	Mesh::ptr quadMesh = std::shared_ptr<Mesh>(new ScreenQuad());
 
 	framebuffer->bind();

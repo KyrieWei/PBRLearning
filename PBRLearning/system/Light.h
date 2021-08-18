@@ -53,7 +53,7 @@ public:
 	PointLight();
 	~PointLight() = default;
 
-	void setAttenuationCoeff(float coeff) { attenuationCoeff = coeff; }
+	void setAttenuationCoeff(float coeff);
 	virtual void setLightColor(glm::vec3 radiance) { this->radiance = radiance; }
 	void setPosition(glm::vec3 pos, unsigned int order) { this->order = order; position = pos; }
 	virtual void setLightUniform(Shader::ptr shader, Camera::ptr camera);
