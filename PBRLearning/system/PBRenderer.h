@@ -7,6 +7,7 @@
 #include "../textures/TextureMgr.h"
 #include "../drawable/Drawable.h"
 #include "../postprocess/DeferredShading.h"
+#include "../postprocess/GaussianBlur.h"
 #include "Light.h"
 
 class PBRenderer
@@ -21,8 +22,12 @@ private:
 
 	Camera::ptr camera;
 
+	//bloom effect
+	GaussianBlur::ptr gaussianBlur;
 	//deferred shading
 	DeferredShading::ptr deferredShading;
+	//light
+	PointLightDrawable::ptr pointLightDrawable;
 
 	//manager
 	MeshMgr::ptr meshMgr;
@@ -46,6 +51,7 @@ public:
 	void initialzie(int width, int height);
 	void setSkyDomeHDR(const std::string& path);
 	void addPointLight(glm::vec3 pos, glm::vec3 radiance);
+	void addPointLightDrawble();
 	void addDrawable(Drawable* target) { drawableList->addDrawable(target); }
 	void setSunLight(glm::vec3 dir, glm::vec3 radiance);
 

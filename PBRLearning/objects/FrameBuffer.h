@@ -33,6 +33,9 @@ public:
 
 	void bind();
 	void unBind(int width = -1, int height = -1);
+
+	unsigned int getID() const { return id; }
+
 private:
 	void clearFramebuffer();
 	void setupColorFramebuffer(const std::string& name, unsigned int attachIndex);

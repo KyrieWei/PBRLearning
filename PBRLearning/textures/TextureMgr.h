@@ -115,6 +115,13 @@ public:
 		return objects[unit];
 	}
 
+	unsigned int getTextureIndex(const std::string& name)
+	{
+		if (objectsMap.find(name) == objectsMap.end())
+			return -1;
+		return objectsMap[name];
+	}
+
 	bool bindTexture(unsigned int index, unsigned int unit)
 	{
 		if (index >= objects.size())

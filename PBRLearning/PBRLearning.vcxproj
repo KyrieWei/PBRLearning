@@ -149,7 +149,9 @@
     <ClCompile Include="objects\Geometry.cpp" />
     <ClCompile Include="objects\MeshMgr.cpp" />
     <ClCompile Include="postprocess\DeferredShading.cpp" />
+    <ClCompile Include="postprocess\GaussianBlur.cpp" />
     <ClCompile Include="postprocess\IBLAuxiliary.cpp" />
+    <ClCompile Include="postprocess\SSAOProcess.cpp" />
     <ClCompile Include="shaders\ShaderMgr.cpp" />
     <ClCompile Include="system\Light.cpp" />
     <ClCompile Include="system\PBRenderer.cpp" />
@@ -170,7 +172,9 @@
     <ClInclude Include="objects\Geometry.h" />
     <ClInclude Include="objects\MeshMgr.h" />
     <ClInclude Include="postprocess\DeferredShading.h" />
+    <ClInclude Include="postprocess\GaussianBlur.h" />
     <ClInclude Include="postprocess\IBLAuxiliary.h" />
+    <ClInclude Include="postprocess\SSAOProcess.h" />
     <ClInclude Include="shaders\ShaderMgr.h" />
     <ClInclude Include="system\Light.h" />
     <ClInclude Include="system\PBRenderer.h" />
@@ -187,6 +191,10 @@
     <ClInclude Include="tools\Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="gaussianBlur_frag.fs" />
+    <None Include="gaussianBlur_vert.vs" />
+    <None Include="mergeBlur_frag.fs" />
+    <None Include="mergeBlur_vert.vs" />
     <None Include="shaders\debug_frag.fs" />
     <None Include="shaders\debug_vert.vs" />
     <None Include="shaders\diffuse_shader_frag.fs" />
@@ -195,6 +203,8 @@
     <None Include="shaders\hdrToCubemap_vert.vs" />
     <None Include="shaders\irradiance_convolution_frag.fs" />
     <None Include="shaders\irradiance_convolution_vert.vs" />
+    <None Include="shaders\lightSource_frag.fs" />
+    <None Include="shaders\lightSource_vert.vs" />
     <None Include="shaders\pbrDeferredShading_frag.fs" />
     <None Include="shaders\pbrDeferredShading_vert.vs" />
     <None Include="shaders\pbr_frag.fs" />

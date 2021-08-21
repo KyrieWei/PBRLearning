@@ -4,6 +4,8 @@
 #include "../tools/Shader.h"
 #include "../tools/Camera.h"
 #include "Transform3D.h"
+#include "../system/Light.h"
+#include "../shaders/ShaderMgr.h"
 
 class PBRMaterial
 {
@@ -101,6 +103,35 @@ public:
 
 	SkyDome() = default;
 
+	virtual void render(Camera::ptr camera);
+	virtual void renderDepth(Shader::ptr shader);
+};
+
+class PointLightDrawable : public Drawable
+{
+private:
+	glm::vec3 lightColor;
+	float particleRadius;
+	unsigned int particleNum;
+	unsigned int particleVAO;
+	unsigned int particleVBO;
+	ShaderMgr::ptr shaderMgr;
+
+	struct LightSource
+	{
+		glm::vec3 pos;
+		glm::vec3 color;
+	};
+
+public:
+	typedef std::shared_ptr<PointLightDrawable> ptr;
+
+	PointLightDrawable();
+	~PointLightDrawable();
+
+	void setPointLightRadius(float radius);
+	void setPointLightPositions(const std::vector<PointLight::ptr>& lights);
+	
 	virtual void render(Camera::ptr camera);
 	virtual void renderDepth(Shader::ptr shader);
 };

@@ -9,7 +9,9 @@ void PBRenderer::initialzie(int _width, int _height)
 
 	camera = std::make_shared<Camera>(Camera(glm::vec3(0.0f, 0.0f, 3.0f)));
 
-	setSunLight(glm::vec3(0.1f, 1.0f, 0.3f), glm::vec3(0.6f));
+	setSunLight(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(1.0f));
+
+	gaussianBlur = std::shared_ptr<GaussianBlur>(new GaussianBlur(width, height));
 
 	meshMgr = MeshMgr::getSingleton();
 	shaderMgr = ShaderMgr::getSingleton();
@@ -32,6 +34,17 @@ void PBRenderer::addPointLight(glm::vec3 pos, glm::vec3 radiance)
 	pointLight->setPosition(pos, pointLights.size());
 	pointLight->setLightColor(radiance);
 	pointLights.push_back(pointLight);
+
+}
+
+void PBRenderer::addPointLightDrawble()
+{
+	if (pointLightDrawable == nullptr && pointLights.size() > 0)
+	{
+		pointLightDrawable = std::shared_ptr<PointLightDrawable>(new PointLightDrawable());
+		pointLightDrawable->setPointLightRadius(0.7f);
+		pointLightDrawable->setPointLightPositions(pointLights);
+	}
 }
 
 void PBRenderer::setSunLight(glm::vec3 dir, glm::vec3 radiance)
@@ -168,17 +181,47 @@ void PBRenderer::render()
 	//set camera
 	camera->setPerspectiveProject((float)width / (float)height, 0.1f, 1000.0f);
 
+
+	//point light objects generation
+
 	//render to g-buffers
 	deferredShading->bindDeferredFramebuffer();
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_DEPTH_TEST);
 	
 	drawableList->render(camera);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//deferred shading
+	//deferred shading and forward shading
+	//gaussianBlur->bindGaussianFramebuffer();
+
+	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	deferredShading->renderDeferredShading(camera, sunLight, pointLights);
 
+	
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, deferredShading->getFrameBufferId());
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	//deferredShading->ssaoFactorGeneration(camera);
+
+	glEnable(GL_DEPTH_TEST);
+	glCullFace(GL_FRONT);
 	skyDome->render(camera);
+
+	//point light
+	if (pointLightDrawable != nullptr)
+		pointLightDrawable->render(camera);
+
+	//gaussianBlur->renderGaussianBlurEffect();
 }

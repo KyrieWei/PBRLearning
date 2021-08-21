@@ -135,5 +135,7 @@ void FelLordScene::initializeScene(PBRenderer::ptr pbrrenderer)
 		pbrrenderer->addPointLight(pos, radiance);
 	}
 
+	pbrrenderer->addPointLightDrawble();
+
 	pbrrenderer->setSunLight(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f));
 }

@@ -16,6 +16,19 @@ void DeferredShading::bindDeferredFramebuffer()
 	deferredFramebuffer->bind();
 }
 
+unsigned int DeferredShading::getFrameBufferId()
+{
+	return deferredFramebuffer->getID();
+}
+
+void DeferredShading::ssaoFactorGeneration(Camera::ptr camera)
+{
+	unsigned int posTexIndex = TextureMgr::getSingleton()->getTextureIndex("deferredPos");
+	unsigned int normalTexIndex = TextureMgr::getSingleton()->getTextureIndex("deferredNormal");
+	unsigned int depthTexIndex = TextureMgr::getSingleton()->getTextureIndex("deferredDepth");
+	ssaoProcess->SSAOProcessDepth(camera, posTexIndex, normalTexIndex, depthTexIndex);
+}
+
 void DeferredShading::renderDeferredShading(Camera::ptr camera, Light::ptr sunLight, const std::vector<PointLight::ptr>& pointLights)
 {
 	Shader::ptr deferredShader = ShaderMgr::getSingleton()->getShader(deferredShaderIndex);
@@ -60,4 +73,5 @@ void DeferredShading::renderDeferredShading(Camera::ptr camera, Light::ptr sunLi
 	texMgr->unbindTexture("irradianceMap");
 	texMgr->unbindTexture("prefilteredMap");
 	texMgr->unbindTexture("brdfLutMap");
+
 }

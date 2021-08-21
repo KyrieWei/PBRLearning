@@ -1,7 +1,5 @@
 #version 330 core
 
-out vec4 fragColor;
-
 in vec2 TexCoord;
 
 const float PI = 3.14159265359;
@@ -44,6 +42,8 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness);
 vec3 fresnelSchlick(float costheta, vec3 F0);
 vec3 fresnelSchlickRoughness(float costheta, vec3 F0, float roughness);
 
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 brightColor;
 
 void main()
 {
@@ -55,6 +55,18 @@ void main()
 	float roughness = overall.r;
 	float metallic = overall.g;
 	float depth = overall.b;
+
+	if(normal.x == 0.0f && normal.y == 0.0f && normal.z == 0.0f)
+	{
+		fragColor.rgb = albedo;
+
+		float brightness = dot(fragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+		brightColor = vec4(fragColor.rgb, 1.0f);
+
+		gl_FragDepth = depth;
+		return;
+	}
+
 	
 	vec3 viewDir = normalize(viewPos - FragPos);
 
@@ -119,12 +131,21 @@ void main()
 	vec3 ambient = KD * diffuse + envSpecular;
 
 	vec3 col = ambient + pointLightRadiance + directionalLightCol;
+	
+	//blur map
+	float brightness = dot(col / (col + vec3(1.0f)), vec3(0.2126, 0.7152, 0.0722));
+	if(brightness > 0.55f)
+		brightColor = vec4(col / (col + vec3(1.0f)), 1.0f);
 
 	//tone mapping
-	col = col / (col + vec3(1.0));
-	col = pow(col, vec3(0.454545));
-	
+	col = vec3(1.0f) - exp(-col * 1.0);
+
+	//gamma correction
+	const float gamma = 2.2f;
+	col = pow(col, vec3(1.0f / gamma));
+
 	fragColor = vec4(col, 1.0);
+	gl_FragDepth = depth;
 }
 
 vec3 fresnelSchlick(float costheta, vec3 F0)
@@ -157,7 +178,7 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 	float k = (r * r) / 8.0;
 
 	float nom = NdotV;
-	float denom = NdotV * (1.0 - k) * k;
+	float denom = NdotV * (1.0 - k) + k;
 
 	return nom / denom;
 }

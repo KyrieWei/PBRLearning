@@ -40,6 +40,9 @@ public:
 	void endFrame();
 	void run();
 
+	int getWindowWidth() const { return width; }
+	int getWindowHeight() const { return height; }
+
 protected:
 
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);

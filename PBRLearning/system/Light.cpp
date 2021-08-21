@@ -23,9 +23,9 @@ void PointLight::setAttenuationCoeff(float coeff)
 
 void PointLight::setLightUniform(Shader::ptr shader, Camera::ptr camera)
 {
-	shader->setVec3("PointLight[" + std::to_string(order) + "].position", position);
-	shader->setVec3("PointLight[" + std::to_string(order) + "].radiance", radiance);
-	shader->setFloat("PointLight[" + std::to_string(order) + "].radius", radius);
+	shader->setVec3("pointLight[" + std::to_string(order) + "].position", position);
+	shader->setVec3("pointLight[" + std::to_string(order) + "].radiance", radiance);
+	shader->setFloat("pointLight[" + std::to_string(order) + "].radius", radius);
 	shader->setFloat("lightAttenuationCoeff", attenuationCoeff);
 }
 

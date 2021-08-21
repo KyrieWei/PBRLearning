@@ -96,6 +96,11 @@ public:
         MovementSpeed = speed;
     }
 
+    float getFovy() const { return Zoom; }
+    float getAspect() const { return aspect; }
+    float getNear() const { return near; }
+    float getFar() const { return far; }
+
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {

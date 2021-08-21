@@ -96,6 +96,12 @@
     <ClCompile Include="system\Light.cpp">
       <Filter>system</Filter>
     </ClCompile>
+    <ClCompile Include="postprocess\GaussianBlur.cpp">
+      <Filter>postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="postprocess\SSAOProcess.cpp">
+      <Filter>postprocess</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tools\Camera.h">
@@ -167,6 +173,12 @@
     <ClInclude Include="system\Light.h">
       <Filter>system</Filter>
     </ClInclude>
+    <ClInclude Include="postprocess\GaussianBlur.h">
+      <Filter>postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="postprocess\SSAOProcess.h">
+      <Filter>postprocess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\pbr_vert.vs">
@@ -221,6 +233,24 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\pbrDeferredShading_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="gaussianBlur_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="gaussianBlur_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="mergeBlur_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="mergeBlur_frag.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\lightSource_vert.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\lightSource_frag.fs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

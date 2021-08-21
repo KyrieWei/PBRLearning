@@ -24,7 +24,7 @@ void main()
 	gAlbedo = texture(albedoMap, TexCoord).rgb;
 
 	float roughness = texture(roughnessMap, TexCoord).r;
-	float metallic = texture(roughnessMap, TexCoord).r;
+	float metallic = texture(metallicMap, TexCoord).r;
 	float depth = gl_FragCoord.z;
 
 	gOverall = vec3(roughness, metallic, depth);
