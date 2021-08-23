@@ -35,6 +35,7 @@ private:
 	TextureMgr::ptr textureMgr;
 	DrawableList::ptr drawableList;
 
+	std::vector<glm::vec3> rndVelForPointLights;
 
 public:
 	typedef std::shared_ptr<PBRenderer> ptr;
@@ -57,5 +58,8 @@ public:
 
 	void render_simplescene();
 	void render();
+
+private:
+	void updatePointLightPosition();
 };
 

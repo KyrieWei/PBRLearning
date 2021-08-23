@@ -16,6 +16,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+
 void main()
 {
 	vec3 T = normalize(vec3(model * vec4(tangent, 0.0)));

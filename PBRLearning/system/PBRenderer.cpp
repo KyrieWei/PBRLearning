@@ -121,6 +121,10 @@ void PBRenderer::render_simplescene()
 	textureMgr->bindTexture("skyboxConvCubemap", 0);
 	textureMgr->bindTexture("skyboxPrefilterMap", 1);
 	textureMgr->bindTexture("brdfLutMap", 2);
+	textureMgr->bindTexture("sphere3_basecolor", 3);
+	textureMgr->bindTexture("sphere3_metalness", 4);
+	textureMgr->bindTexture("sphere3_normal", 5);
+	textureMgr->bindTexture("sphere3_roughness", 6);
 
 	Mesh::ptr mesh = std::shared_ptr<Mesh>(new Sphere(1, 25, 25));
 
@@ -128,11 +132,11 @@ void PBRenderer::render_simplescene()
 	glm::mat4 model;
 	for (int row = 0; row < 7; row++)
 	{
-		shader->setFloat("metallic", (float)row / 7.0f);
+		//shader->setFloat("metallic", (float)row / 7.0f);
 		
 		for (int col = 0; col < 7; col++)
 		{
-			shader->setFloat("roughness", glm::clamp((float)col / 7.0f, 0.05f, 1.0f));
+			//shader->setFloat("roughness", glm::clamp((float)col / 7.0f, 0.05f, 1.0f));
 			
 			model = glm::mat4(1.0f);
 			model = glm::translate(model, glm::vec3((col - 7 / 2) * 2.5, (row - 7 / 2) * 2.5, 0.0f));
@@ -181,6 +185,7 @@ void PBRenderer::render()
 	//set camera
 	camera->setPerspectiveProject((float)width / (float)height, 0.1f, 1000.0f);
 
+	updatePointLightPosition();
 
 	//point light objects generation
 
@@ -224,4 +229,55 @@ void PBRenderer::render()
 		pointLightDrawable->render(camera);
 
 	//gaussianBlur->renderGaussianBlurEffect();
+}
+
+
+void PBRenderer::updatePointLightPosition()
+{
+	if (rndVelForPointLights.empty())
+	{
+		rndVelForPointLights.resize(pointLights.size());
+		srand(time(nullptr));
+		for (int i = 0; i < pointLights.size(); i++)
+		{
+			glm::vec3 vel;
+			vel.x = (((double)rand()) / RAND_MAX) * 2.0f - 1.0f;
+			vel.y = 0.0f;
+			vel.z = (((double)rand()) / RAND_MAX) * 2.0f - 1.0f;
+			rndVelForPointLights[i] = vel;
+		}
+	}
+
+	const float speed = 2.0f;
+
+	for (int i = 0; i < pointLights.size(); i++)
+	{
+		glm::vec3 pos = pointLights[i]->getPosition();
+		pos += rndVelForPointLights[i] * speed;
+
+		if (pos.x > 200.0f)
+		{
+			pos.x = 200.0f;
+			rndVelForPointLights[i].x *= (-1.0f);
+		}
+		if (pos.x < -200.0f)
+		{
+			pos.x = -200.0f;
+			rndVelForPointLights[i].x *= (-1.0f);
+		}
+		if (pos.z > 200.0f)
+		{
+			pos.z = 200.0f;
+			rndVelForPointLights[i].z *= (-1.0f);
+		}
+		if (pos.z < -200.0f)
+		{
+			pos.z = -200.0f;
+			rndVelForPointLights[i].z *= (-1.0f);
+
+		}
+		pointLights[i]->setPosition(pos, i);
+	}
+	 
+	pointLightDrawable->setPointLightPositions(pointLights);
 }

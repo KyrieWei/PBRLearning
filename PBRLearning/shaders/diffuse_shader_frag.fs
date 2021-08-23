@@ -20,7 +20,7 @@ void main()
 	
 	vec3 normal = normalize(2.0f * texture(normalMap, TexCoord).rgb - vec3(1.0f));
 	gNormal = TBNMatrix * normal;
-
+    
 	gAlbedo = texture(albedoMap, TexCoord).rgb;
 
 	float roughness = texture(roughnessMap, TexCoord).r;

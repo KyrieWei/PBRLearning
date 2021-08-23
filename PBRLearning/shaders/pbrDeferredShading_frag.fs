@@ -50,7 +50,7 @@ void main()
 	//sample gbuffer
 	vec3 FragPos = texture(gPosition, TexCoord).rgb;
 	vec3 normal = texture(gNormal, TexCoord).rgb;
-	vec3 albedo = texture(gAlbedo, TexCoord).rgb;
+	vec3 albedo = pow(texture(gAlbedo, TexCoord).rgb, vec3(2.2));
 	vec3 overall = texture(gOverall, TexCoord).rgb;
 	float roughness = overall.r;
 	float metallic = overall.g;
@@ -125,7 +125,7 @@ void main()
 
 	const float MAX_REFLECTION_LOD = 4.0;
 	vec3 R = normalize(reflect(-viewDir, normal));
-	vec3 prefilteredColor = texture(prefilteredMap, R, roughness * MAX_REFLECTION_LOD).rgb;
+	vec3 prefilteredColor = textureLod(prefilteredMap, R, roughness * MAX_REFLECTION_LOD).rgb;
 	vec2 envBrdf = texture(brdfLutMap, vec2(max(dot(normal, viewDir), 0.0f), roughness)).rg;
 	vec3 envSpecular = prefilteredColor * (KS * envBrdf.x + envBrdf.y);
 	vec3 ambient = KD * diffuse + envSpecular;
